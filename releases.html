@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Release notes · Dockn't</title>
+<meta name="description" content="O que mudou em cada versão beta do Dockn't.">
+<link rel="icon" href="logo.png">
+<script>try{var t=localStorage.getItem("docknt-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Instrument+Serif:ital@1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;--navbg:rgba(247,246,242,.86);--onink:#fff;--bg:#f7f6f2;--bg2:#efede6;--card:#fff;--ink:#121316;--mute:#5d5f66;--dim:#8b8d93;--line:#e2dfd6;--blue:#1d4fd8;--green:#16794a;--amber:#a5660c;
+--sans:'Manrope',system-ui,sans-serif;--serif:'Instrument Serif',Georgia,serif;--mono:'IBM Plex Mono',ui-monospace,monospace}
+:root[data-theme=dark]{color-scheme:dark;--navbg:rgba(15,16,19,.86);--onink:#0f1013;--bg:#0f1013;--bg2:#15161a;--card:#1b1d22;--ink:#f1f1ef;--mute:#a6a8ae;--dim:#7d8087;--line:#2a2d33;--blue:#7da5ff;--green:#5fd39a;--amber:#f0b45c}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark;--navbg:rgba(15,16,19,.86);--onink:#0f1013;--bg:#0f1013;--bg2:#15161a;--card:#1b1d22;--ink:#f1f1ef;--mute:#a6a8ae;--dim:#7d8087;--line:#2a2d33;--blue:#7da5ff;--green:#5fd39a;--amber:#f0b45c}}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+@media(max-width:600px){.wrap{padding:0 16px}}
+.skip{position:absolute;left:-999px;top:8px;background:var(--ink);color:var(--onink);padding:8px 12px;border-radius:8px;z-index:99}
+.skip:focus{left:8px}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+em.it{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--blue)}
+
+.nav{position:sticky;top:0;z-index:50;background:var(--navbg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:16px;height:66px}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:17px;text-decoration:none}
+.brand img{width:28px;height:28px}
+.tabsTop{display:flex;gap:2px;background:var(--bg2);border-radius:10px;padding:3px}
+.tabsTop a{white-space:nowrap;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--mute);padding:5px 11px;border-radius:8px}
+.tabsTop a.on{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.navBtn{white-space:nowrap;font:inherit;font-size:13px;font-weight:600;background:none;border:1px solid var(--line);color:var(--mute);border-radius:8px;padding:5px 10px;cursor:pointer}
+.navBtn:hover{color:var(--ink)}
+.navBtn.first{margin-left:auto}
+
+header.intro{padding:70px 0 34px}
+.eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--blue)}
+h1{font-size:clamp(40px,6vw,72px);line-height:1;letter-spacing:-.045em;font-weight:800;margin-top:14px}
+.lede{font-size:18px;color:var(--mute);max-width:620px;margin-top:18px}
+.memo{margin-top:26px;border-left:3px solid var(--blue);padding:4px 0 4px 16px;color:var(--mute);font-size:15px;max-width:640px}
+.memo b{color:var(--ink)}
+
+.layout{display:grid;grid-template-columns:200px 1fr;gap:48px;padding-bottom:100px}
+@media(max-width:860px){.layout{grid-template-columns:1fr;gap:20px}}
+.toc{position:sticky;top:90px;align-self:start;display:grid;gap:2px}
+@media(max-width:860px){.toc{position:static;display:flex;flex-wrap:wrap;gap:6px}}
+.toc a{display:flex;justify-content:space-between;gap:10px;text-decoration:none;font-family:var(--mono);font-size:13px;color:var(--mute);padding:7px 10px;border-radius:8px}
+@media(max-width:860px){.toc a{border:1px solid var(--line)}}
+.toc a:hover{color:var(--ink);background:var(--bg2)}
+.toc a.on{color:var(--ink);background:var(--bg2)}
+.toc small{color:var(--dim)}
+
+.rel{border-top:1px solid var(--line);padding:38px 0 46px}
+.rel:first-child{border-top:0;padding-top:0}
+.head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ver{font-family:var(--mono);font-size:15px;font-weight:500}
+.badge{font-size:12px;font-weight:700;border-radius:999px;padding:3px 10px;border:1px solid currentColor}
+.badge.current{color:var(--green)}
+.badge.beta{color:var(--dim)}
+.date{font-size:14px;color:var(--dim)}
+.rel h2{font-size:clamp(26px,3.2vw,36px);letter-spacing:-.03em;line-height:1.1;font-weight:800;margin-top:12px}
+.rel .sum{color:var(--mute);margin-top:10px;max-width:680px}
+.grp{margin-top:26px}
+.grp h3{font-size:13px;font-family:var(--mono);font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--dim);display:flex;align-items:center;gap:8px}
+.grp h3::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--blue)}
+.grp.fix h3::before{background:var(--green)}
+.grp.next h3::before{background:var(--amber)}
+.grp ul{list-style:none;margin-top:10px;display:grid;gap:9px}
+.grp li{position:relative;padding-left:18px}
+.grp li::before{content:"–";position:absolute;left:0;color:var(--dim)}
+.grp li b{font-weight:700}
+.quote{margin-top:26px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;font-size:15.5px}
+.quote span{display:block;font-size:13px;color:var(--dim);margin-top:6px}
+
+footer{border-top:1px solid var(--line);padding:34px 0 44px;font-size:14px;color:var(--dim)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<a class="skip" href="#main" data-i="skip">Pular para o conteúdo</a>
+<header class="nav"><div class="wrap">
+  <a class="brand" href="index.html"><img src="logo.png" width="28" height="28" alt="">Dockn't</a>
+  <nav class="tabsTop" aria-label="Páginas"><a href="index.html" data-i="tabP">Produto</a><a href="releases.html" class="on" aria-current="page">Release notes</a></nav>
+  <button class="navBtn first" id="themeBtn" type="button"></button>
+  <button class="navBtn" id="lang" type="button">English</button>
+</div></header>
+
+<main id="main" class="wrap">
+  <header class="intro">
+    <div class="eyebrow">Release notes</div>
+    <h1 data-i="title">O que mudou. <em class="it">Sem ata de reunião.</em></h1>
+    <p class="lede" data-i="lede">Cada versão beta do Dockn't, do que é novo ao que foi corrigido. As betas rodam nas máquinas da equipe enquanto a versão da Microsoft Store não sai.</p>
+    <p class="memo" data-i="memo"><b>Recado da gerência:</b> a numeração recomeçou em 0.1.0-beta no dia 8 de outubro. As versões 1.0.x anteriores eram testes internos e foram, oficialmente, esquecidas.</p>
+  </header>
+  <div class="layout">
+    <nav class="toc" id="toc" aria-label="Versões"></nav>
+    <div id="list"></div>
+  </div>
+</main>
+
+<footer><div class="wrap"><span>© 2026 Arkhenet Labs · <span data-i="rights">Todos os direitos reservados</span></span><span data-i="foot">As notas foram escritas. Ninguém marcou reunião.</span></div></footer>
+
+<script>
+const L={
+pt:{skip:"Pular para o conteúdo",tabP:"Produto",title:"O que mudou. <em class='it'>Sem ata de reunião.</em>",
+lede:"Cada versão beta do Dockn't, do que é novo ao que foi corrigido. As betas rodam nas máquinas da equipe enquanto a versão da Microsoft Store não sai.",
+memo:"<b>Recado da gerência:</b> a numeração recomeçou em 0.1.0-beta no dia 8 de outubro. As versões 1.0.x anteriores eram testes internos e foram, oficialmente, esquecidas.",
+rights:"Todos os direitos reservados",foot:"As notas foram escritas. Ninguém marcou reunião.",lang:"English",
+themes:["Tema: automático","Tema: claro","Tema: escuro"],current:"Atual",beta:"Beta",new:"Novidades",fix:"Correções",next:"Em andamento",months:["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"]},
+en:{skip:"Skip to content",tabP:"Product",title:"What changed. <em class='it'>No meeting minutes.</em>",
+lede:"Every Dockn't beta, from what's new to what was fixed. The betas run on the team's machines until the Microsoft Store version ships.",
+memo:"<b>Note from management:</b> numbering restarted at 0.1.0-beta on October 8. The earlier 1.0.x versions were internal tests and have been, officially, forgotten.",
+rights:"All rights reserved",foot:"The notes were written. Nobody scheduled a meeting.",lang:"Português",
+themes:["Theme: auto","Theme: light","Theme: dark"],current:"Current",beta:"Beta",new:"New",fix:"Fixes",next:"In progress",months:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]}};
+
+// Built from the commit history; keep in sync with releases.json.
+const R=[
+{v:"0.1.24-beta",d:"2026-10-09",current:true,
+ t:{pt:"A dock em qualquer borda",en:"The dock on any edge"},
+ s:{pt:"A dock sai do rodapé, ganha perfis por tela e uma paleta de cores própria.",en:"The dock leaves the bottom edge and gains per-screen profiles and its own color palette."},
+ new:[
+  ["<b>Qualquer borda:</b> embaixo, em cima, à esquerda ou à direita, com a distância da borda que você escolher.","<b>Any edge:</b> bottom, top, left or right, at the distance from the edge you choose."],
+  ["<b>Barra de largura total</b> com cantos arredondados opcionais, desenhada como uma pílula longa afastada das bordas.","<b>Full-width bar</b> with optional rounded corners, drawn as a long pill clear of the screen edges."],
+  ["<b>Perfis por tela:</b> troque o perfil de um monitor pelos pontos na própria dock. As marcas de apps abertos usam a cor do perfil exibido.","<b>Per-screen profiles:</b> switch a monitor's profile from dots on the dock. Running-app marks take the shown profile's color."],
+  ["<b>Placas</b> atrás dos ícones, com formato, cor e tamanho de ícone próprios. Ícones maiores na dock.","<b>Plates</b> behind icons, with their own shape, color and icon size. Larger icons on the dock."],
+  ["<b>Uma paleta para tudo:</b> marcas e placas usam as mesmas cores, com seletor de cor do próprio Dock Studio.","<b>One palette for everything:</b> marks and plates share colors, with Dock Studio's own color picker."],
+  ["<b>Atividade, CPU e Memória</b> com três estilos: anéis, gráfico ou números.","<b>Activity, CPU and Memory</b> in three styles: rings, chart or numbers."],
+  ["<b>Nova seção Configurações</b> no Dock Studio: posição, distância da borda e idioma.","<b>New Settings section</b> in Dock Studio: position, edge distance and language."],
+  ["<b>Área de trabalho remota:</b> as janelas locais se ajustam ao lado da dock em qualquer borda.","<b>Remote Desktop:</b> local windows fit beside the dock on every edge."],
+  ["A busca e o tour de boas-vindas apresentam os recursos novos.","Search and the welcome tour introduce the new features."]],
+ fix:[
+  ["A dock mantém a faixa de tela que o Windows reservou, em vez de pedir de novo.","The dock keeps the screen strip Windows reserved instead of asking again."],
+  ["Falhas inesperadas ficam registradas num log no próprio PC. Nada é enviado.","Unexpected crashes are logged on the PC itself. Nothing is sent."]],
+ next:[
+  ["Envio para a Microsoft Store.","Microsoft Store submission."],
+  ["Checklist manual da V1 e medições de desempenho.","V1 manual checklist and performance measurements."]],
+ q:{pt:"“Eu pedi a dock do lado esquerdo. Agora ela está do lado esquerdo. Isso nunca aconteceu comigo nessa empresa.”",en:"“I asked for the dock on the left side. Now it's on the left side. That has never happened to me at this company.”",by:{pt:"Vendas, mesa perto da janela",en:"Sales, desk by the window"}}},
+{v:"0.1.12-beta",d:"2026-10-08",
+ t:{pt:"Personalizar e empilhar",en:"Personalize and stack"},
+ s:{pt:"O Dock Studio cresce e os widgets aprendem a dividir espaço.",en:"Dock Studio grows and widgets learn to share space."},
+ new:[
+  ["<b>Seção Personalizar:</b> placas, pulo ao abrir, escala ao passar o mouse, contorno, halo e reflexo.","<b>Personalize section:</b> plates, launch bounce, hover scale, outline, halo and reflection."],
+  ["<b>Widgets empilhados:</b> pelo menu, soltando um widget no meio de outro, e trocando de página com Ctrl + roda do mouse.","<b>Stacked widgets:</b> from the menu, by dropping one widget on the middle of another, and paging with Ctrl + mouse wheel."],
+  ["<b>Carrosséis lado a lado</b> no Dock Studio, com as páginas agrupadas em pares.","<b>Side-by-side carousels</b> in Dock Studio, with pages grouped in pairs."],
+  ["<b>Espaçadores</b> pequenos e grandes entre os itens.","Small and large <b>spacers</b> between items."],
+  ["Renomear itens da dock pelo Dock Studio.","Rename dock items from Dock Studio."],
+  ["Opções de prévia de janela e atraso para revelar a dock oculta.","Window preview options and a reveal delay for the hidden dock."],
+  ["<b>Widget do Claude:</b> preenchimento contra um orçamento, alternando entre 5 horas e 7 dias, e tokens por dia na aba da semana.","<b>Claude widget:</b> fills against a budget, switching between 5 hours and 7 days, with tokens per day in the week tab."],
+  ["Dock Studio maior, organizado em painéis com imagens.","A larger Dock Studio, organized into picture panels."]],
+ fix:[
+  ["Aviso quando outra dock que esconde a barra de tarefas está aberta.","A warning when another dock that hides the taskbar is running."]],
+ q:{pt:"“Empilhei três widgets e troquei de página com Ctrl + roda. Fiquei vinte minutos fazendo isso. Ninguém pode provar.”",en:"“I stacked three widgets and paged them with Ctrl + wheel. I did that for twenty minutes. Nobody can prove it.”",by:{pt:"Contabilidade",en:"Accounting"}}},
+{v:"0.1.0-beta",d:"2026-10-08",
+ t:{pt:"A primeira beta",en:"The first beta"},
+ s:{pt:"Tudo o que o Dockn't já fazia, reunido na primeira versão com numeração nova.",en:"Everything Dockn't already did, gathered in the first version with the new numbering."},
+ new:[
+  ["<b>Dock nativa em Rust:</b> apps fixados e abertos, prévia de janelas, pilhas de pastas e área de notificação.","<b>Native Rust dock:</b> pinned and running apps, window previews, folder stacks and the notification area."],
+  ["<b>Esconder a barra de tarefas</b>, com um processo separado que devolve a barra se a dock fechar.","<b>Hide the taskbar</b>, with a separate process that restores it if the dock closes."],
+  ["<b>37 widgets</b> com larguras de 1 a 4 e painéis próprios.","<b>37 widgets</b> with 1 to 4 widths and their own panels."],
+  ["<b>Busca com Alt + Espaço:</b> apps, arquivos, configurações e contas.","<b>Alt + Space search:</b> apps, files, settings and math."],
+  ["<b>Dock Studio</b> com prévia ao vivo, oito temas (incluindo Papel, Alto contraste, Floresta e Crepúsculo) e busca nas opções.","<b>Dock Studio</b> with a live preview, eight themes (including Paper, High contrast, Forest and Dusk) and search across options."],
+  ["<b>Vários monitores:</b> uma dock por tela, opcional, com perfis.","<b>Multiple monitors:</b> an optional dock per screen, with profiles."],
+  ["<b>Controles de áudio próprios:</b> volume, mudo e dispositivo de saída, sem abrir o painel do Windows.","<b>Built-in audio controls:</b> volume, mute and output device, without opening Windows' panel."],
+  ["<b>Encomendas:</b> rastreio guardado só no seu PC, sem conta.","<b>Parcels:</b> tracking codes kept only on your PC, no account."],
+  ["<b>Chat de IA</b> com a sua chave do Gemini ou OpenRouter, guardada no Gerenciador de Credenciais.","<b>AI chat</b> with your own Gemini or OpenRouter key, kept in Credential Manager."],
+  ["Português e inglês, tour de boas-vindas, iniciar com o Windows, instância única e respeito ao Reduzir movimento.","Portuguese and English, a welcome tour, start with Windows, single instance and Reduce Motion support."]],
+ q:{pt:"“Primeira beta. Fizemos uma festa. A festa foi eu abrindo o Dock Studio.”",en:"“First beta. We threw a party. The party was me opening Dock Studio.”",by:{pt:"Comitê de planejamento de festas",en:"Party planning committee"}}}
+];
+
+const $=s=>document.querySelector(s);
+let saved=null;try{saved=localStorage.getItem('docknt-lang')}catch(e){}
+let lang=L[saved]?saved:((navigator.language||'').toLowerCase().startsWith('pt')?'pt':'en');
+const THEMES=['auto','light','dark'];
+let theme='auto';try{const t=localStorage.getItem('docknt-theme');if(THEMES.includes(t))theme=t}catch(e){}
+const id=v=>'v'+v.replace(/\./g,'-');
+function date(d){const [y,m,day]=d.split('-').map(Number),M=L[lang].months[m-1];return lang==='pt'?`${day} de ${M} de ${y}`:`${M} ${day}, ${y}`}
+function grp(cls,title,items){return items&&items.length?`<div class="grp ${cls}"><h3>${title}</h3><ul>${items.map(i=>`<li>${i[lang==='pt'?0:1]}</li>`).join('')}</ul></div>`:''}
+function render(){
+  const l=L[lang];document.documentElement.lang=lang==='pt'?'pt-BR':'en';
+  document.querySelectorAll('[data-i]').forEach(el=>{if(l[el.dataset.i]!==undefined)el.innerHTML=l[el.dataset.i]});
+  $('#lang').textContent=l.lang;
+  $('#toc').innerHTML=R.map(r=>`<a href="#${id(r.v)}"><span>${r.v}</span>${r.current?`<small>${l.current}</small>`:''}</a>`).join('');
+  $('#list').innerHTML=R.map(r=>`<article class="rel" id="${id(r.v)}"><div class="head"><span class="ver">${r.v}</span><span class="badge ${r.current?'current':'beta'}">${r.current?l.current:l.beta}</span><time class="date" datetime="${r.d}">${date(r.d)}</time></div>
+    <h2>${r.t[lang]}</h2><p class="sum">${r.s[lang]}</p>${grp('',l.new,r.new)}${grp('fix',l.fix,r.fix)}${grp('next',l.next,r.next)}
+    ${r.q?`<p class="quote">${r.q[lang]}<span>${r.q.by[lang]}</span></p>`:''}</article>`).join('');
+  paintTheme();spy();
+}
+function paintTheme(){if(theme==='auto')delete document.documentElement.dataset.theme;else document.documentElement.dataset.theme=theme;$('#themeBtn').textContent=L[lang].themes[THEMES.indexOf(theme)]}
+$('#themeBtn').onclick=()=>{theme=THEMES[(THEMES.indexOf(theme)+1)%3];try{localStorage.setItem('docknt-theme',theme)}catch(e){}paintTheme()};
+$('#lang').onclick=()=>{lang=lang==='pt'?'en':'pt';try{localStorage.setItem('docknt-lang',lang)}catch(e){}render()};
+let so;function spy(){if(so)so.disconnect();const links=[...document.querySelectorAll('#toc a')];
+  so=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-30% 0px -60% 0px'});
+  document.querySelectorAll('.rel').forEach(r=>so.observe(r))}
+render();
+</script>
+</body>
+</html>

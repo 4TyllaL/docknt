@@ -1,0 +1,21 @@
+name: Sugestão / Suggestion
+description: Uma ideia para o Dockn't. / An idea for Dockn't.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Qual problema isso resolve? / What problem does this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: Sua ideia / Your idea
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Versão do Dockn't / Dockn't version
+      placeholder: 0.1.24-beta

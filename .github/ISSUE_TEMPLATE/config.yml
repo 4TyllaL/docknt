@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Problema de segurança / Security issue
+    url: https://4tyllal.github.io/
+    about: Não abra uma issue pública. Fale direto com o desenvolvedor. / Don't open a public issue. Contact the developer directly.

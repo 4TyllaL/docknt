@@ -1,0 +1,70 @@
+name: Bug
+description: Algo no Dockn't não funcionou como deveria. / Something in Dockn't didn't work as it should.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por reportar. Não inclua caminhos pessoais, senhas ou chaves.
+        Thanks for reporting. Don't include personal paths, passwords or keys.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Área / Area
+      options:
+        - Apps e ícones / Apps & icons
+        - Widgets
+        - Busca / Search
+        - Bandeja e barra de tarefas / Tray & taskbar
+        - Dock Studio
+        - Vários monitores e perfis / Monitors & profiles
+        - Desempenho / Performance
+        - Outro / Other
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: O que aconteceu / What happened
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: O que você esperava / What you expected
+  - type: textarea
+    id: steps
+    attributes:
+      label: Como reproduzir / Steps to reproduce
+      placeholder: "1.\n2.\n3."
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: Frequência / How often
+      options:
+        - Sempre / Always
+        - Às vezes / Sometimes
+        - Uma vez / Once
+  - type: input
+    id: version
+    attributes:
+      label: Versão do Dockn't / Dockn't version
+      description: Dock Studio → Sobre / About
+      placeholder: 0.1.24-beta
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows
+      placeholder: Windows 11 24H2
+  - type: input
+    id: display
+    attributes:
+      label: Monitores e escala / Monitors and scale
+      placeholder: 2 monitores, 125%
+  - type: textarea
+    id: extra
+    attributes:
+      label: Prints ou detalhes / Screenshots or details
+      description: Arraste imagens para cá. / Drag images here.

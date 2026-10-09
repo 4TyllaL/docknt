@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dockn't: isto não é uma dock</title>
+<meta name="description" content="Dockn't é uma dock nativa para Windows 11, feita em Rust, com apps, widgets ao vivo e dados que ficam no seu computador.">
+<link rel="icon" href="logo.png">
+<script>try{var t=localStorage.getItem("docknt-theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Instrument+Serif:ital@1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;--navbg:rgba(247,246,242,.86);--onink:#fff;--bg:#f7f6f2;--bg2:#efede6;--card:#fff;--ink:#121316;--mute:#5d5f66;--dim:#8b8d93;--line:#e2dfd6;--blue:#1d4fd8;--blue2:#e7edfd;
+--sans:'Manrope',system-ui,sans-serif;--serif:'Instrument Serif',Georgia,serif;--mono:'IBM Plex Mono',ui-monospace,monospace;
+--wall:linear-gradient(150deg,#3a4c8f 0%,#252c57 50%,#151833 100%)}
+:root[data-theme=dark]{color-scheme:dark;--navbg:rgba(15,16,19,.86);--onink:#0f1013;--bg:#0f1013;--bg2:#15161a;--card:#1b1d22;--ink:#f1f1ef;--mute:#a6a8ae;--dim:#7d8087;--line:#2a2d33;--blue:#7da5ff;--blue2:rgba(125,165,255,.18)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark;--navbg:rgba(15,16,19,.86);--onink:#0f1013;--bg:#0f1013;--bg2:#15161a;--card:#1b1d22;--ink:#f1f1ef;--mute:#a6a8ae;--dim:#7d8087;--line:#2a2d33;--blue:#7da5ff;--blue2:rgba(125,165,255,.18)}}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:78px}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+img{display:block;max-width:100%;height:auto}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+@media(max-width:600px){.wrap{padding:0 16px}}
+.skip{position:absolute;left:-999px;top:8px;background:var(--ink);color:#fff;padding:8px 12px;border-radius:8px;z-index:99}
+.skip:focus{left:8px}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+em.it{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:0;color:var(--blue)}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:50;background:var(--navbg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .2s}
+.nav.b{border-color:var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:18px;height:66px}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:17px;text-decoration:none}
+.brand img{width:28px;height:28px}
+.tabsTop{display:flex;gap:2px;background:var(--bg2);border-radius:10px;padding:3px}
+.tabsTop a{white-space:nowrap;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--mute);padding:5px 11px;border-radius:8px}
+.tabsTop a.on{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.links{display:flex;gap:2px;margin-left:auto}
+.links a{white-space:nowrap;font-size:14px;font-weight:500;color:var(--mute);text-decoration:none;padding:6px 10px;border-radius:7px}
+.links a:hover,.links a.on{color:var(--ink)}
+.themeBtn{white-space:nowrap;font:inherit;font-size:13px;font-weight:600;background:none;border:1px solid var(--line);color:var(--mute);border-radius:8px;padding:5px 10px;cursor:pointer}
+.themeBtn:hover{color:var(--ink)}
+.lang{font:inherit;font-size:13px;font-weight:600;background:none;border:1px solid var(--line);color:var(--mute);border-radius:8px;padding:5px 10px;cursor:pointer}
+.lang:hover{color:var(--ink)}
+.menuBtn{display:none;font:inherit;font-size:14px;font-weight:600;background:none;border:1px solid var(--line);border-radius:8px;padding:5px 10px;cursor:pointer}
+.mob{display:none;border-top:1px solid var(--line);padding:8px 16px 14px;background:var(--bg)}
+.mob a{display:block;padding:9px 4px;text-decoration:none;font-weight:500;border-bottom:1px solid var(--line)}
+.mob.open{display:block}
+@media(max-width:1240px){.links{display:none}.themeBtn{margin-left:auto}.menuBtn{display:block}}
+@media(max-width:520px){.tabsTop{display:none}}
+
+/* hero */
+.hero{padding:76px 0 40px;text-align:center}
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--mute);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 13px 5px 9px}
+.pill i{width:8px;height:8px;border-radius:50%;background:#e9a23b;box-shadow:0 0 0 3px rgba(233,162,59,.2)}
+h1{font-size:clamp(50px,9vw,118px);line-height:.95;letter-spacing:-.05em;font-weight:800;margin:24px 0 0}
+h1 em.it{font-size:1.06em}
+.lede{font-size:clamp(17px,2vw,20px);color:var(--mute);max-width:600px;margin:24px auto 0}
+.ctas{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+.btn{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:15px;font-weight:700;text-decoration:none;padding:12px 19px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px -10px rgba(0,0,0,.3)}
+.btn.dark{background:var(--ink);color:var(--onink);border-color:var(--ink)}
+
+/* real capture */
+.capture{position:relative;margin:56px auto 0;max-width:1060px;border-radius:18px;overflow:hidden;aspect-ratio:16/5.2;background:radial-gradient(90% 120% at 50% 110%,#3d5a35 0%,#1f3320 45%,#111a12 100%);box-shadow:0 40px 90px -40px rgba(10,30,10,.65),0 0 0 1px rgba(0,0,0,.06)}
+.capture::after{content:"";position:absolute;inset:0;background:radial-gradient(70% 90% at 50% 0%,rgba(255,255,255,.12),transparent 60%)}
+.capture img{position:absolute;left:50%;bottom:9%;width:min(760px,86%);transform:translate(-50%,140%);z-index:1;border-radius:14px;box-shadow:0 18px 40px rgba(0,0,0,.45);animation:up .9s .3s cubic-bezier(.2,.9,.25,1.04) forwards}
+@keyframes up{to{transform:translate(-50%,0)}}
+.capture .tag{position:absolute;left:18px;top:16px;z-index:1;font-family:var(--mono);font-size:12px;color:rgba(255,255,255,.85);background:rgba(0,0,0,.35);backdrop-filter:blur(6px);border-radius:7px;padding:5px 9px}
+@media(max-width:700px){.capture{aspect-ratio:16/9}.capture img{width:94%}}
+.capnote{font-size:13.5px;color:var(--dim);margin-top:14px}
+
+/* talking head (documentary interview frame) */
+.th{position:relative;border-radius:16px;overflow:hidden;background:#1b1c21;min-height:240px;display:flex;align-items:center;justify-content:center;padding:36px 8% 76px;color:#fff;margin-top:56px;isolation:isolate}
+.th::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(55% 90% at 22% 20%,rgba(255,225,170,.16),transparent 70%),radial-gradient(45% 80% at 85% 10%,rgba(140,175,255,.12),transparent 70%)}
+.th::after{content:"";position:absolute;inset:0;z-index:-1;box-shadow:inset 0 0 120px rgba(0,0,0,.55)}
+.th q{font-size:clamp(19px,2.4vw,28px);font-weight:600;line-height:1.35;text-align:center;max-width:820px;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+.th q::before,.th q::after{content:none}
+.th q i{font-style:normal;opacity:.65;font-weight:500}
+.chyron{position:absolute;left:28px;bottom:24px;display:flex;flex-direction:column;align-items:flex-start;text-align:left;line-height:1.2}
+.chyron b{background:#fff;color:#111;font-weight:800;font-size:15px;padding:6px 12px}
+.chyron span{background:var(--blue);color:#fff;font-size:13px;font-weight:600;padding:5px 12px}
+.hero .th{max-width:1060px;margin-left:auto;margin-right:auto}
+.th.sm{min-height:250px;margin-top:0}
+.th.sm q{font-size:clamp(17px,1.8vw,21px)}
+@media(max-width:700px){.th{min-height:260px;padding:30px 20px 92px}.chyron{left:16px;bottom:18px}}
+
+/* sections */
+section{padding:110px 0}
+section.alt{background:var(--bg2);border-block:1px solid var(--line)}
+.eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--blue)}
+h2{font-size:clamp(34px,4.8vw,58px);line-height:1.02;letter-spacing:-.04em;font-weight:800;margin-top:12px;max-width:820px}
+.sub{font-size:18px;color:var(--mute);max-width:640px;margin-top:18px}
+
+/* overview */
+.over3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:54px}
+@media(max-width:900px){.over3{grid-template-columns:1fr}}
+.oc{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.oc .pic{height:190px;background:var(--wall);display:flex;align-items:center;justify-content:center;padding:18px;overflow:hidden}
+.oc .pic.green{background:#20321f}
+.oc .crop{height:62px;border-radius:12px;background:url(shots/real-dock.png) no-repeat;background-size:760px 76px;box-shadow:0 10px 24px rgba(0,0,0,.35)}
+.oc .txt{padding:22px 24px 26px}
+.oc h3{font-size:18px;font-weight:800}
+.oc p{color:var(--mute);font-size:15px;margin-top:6px}
+
+/* widgets */
+.tile{background-size:606px 56px;background-repeat:no-repeat;height:56px;border-radius:14px;flex:none}
+.tile.S{width:52px;background-position:0 0}
+.tile.M{width:112px;background-position:-62px 0}
+.tile.L{width:168px;background-position:-186px 0}
+.tile.XL{width:240px;background-position:-366px 0}
+.sizes{display:grid;grid-template-columns:.9fr 1.1fr;gap:44px;align-items:center;margin-top:50px}
+@media(max-width:900px){.sizes{grid-template-columns:1fr}}
+.stage{border-radius:18px;background:var(--wall);padding:60px 24px 44px;display:flex;flex-direction:column;align-items:center;gap:16px}
+.stage .bar{display:flex;gap:8px;padding:8px;border-radius:20px;background:rgba(30,30,44,.55);border:1px solid rgba(255,255,255,.18)}
+.stage .tile{transition:width .35s cubic-bezier(.2,.8,.2,1),background-position .35s cubic-bezier(.2,.8,.2,1)}
+.stage small{font-family:var(--mono);font-size:11.5px;color:rgba(255,255,255,.6)}
+.pick{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.pick button{font:inherit;font-size:14px;font-weight:600;background:var(--card);border:1px solid var(--line);color:var(--mute);border-radius:9px;padding:7px 13px;cursor:pointer}
+.pick button.on{background:var(--ink);color:var(--onink);border-color:var(--ink)}
+.twss{font-size:14px;color:var(--dim);margin-top:18px;font-style:italic}
+.cats{display:flex;gap:6px;flex-wrap:wrap;margin-top:60px}
+.wgrid{display:grid;grid-template-columns:repeat(3,1fr);margin-top:20px;border-top:1px solid var(--line)}
+@media(max-width:900px){.wgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.wgrid{grid-template-columns:1fr}}
+.wi{display:grid;grid-template-columns:52px 1fr;gap:16px;align-items:start;padding:18px 16px 18px 0;border-bottom:1px solid var(--line)}
+.wi .tile{background-color:#2a2346}
+.wi h4{font-size:15px;font-weight:700}
+.wi p{font-size:14px;color:var(--mute);margin-top:1px}
+
+/* studio */
+.studio{display:grid;grid-template-columns:.8fr 1.2fr;gap:44px;align-items:center;margin-top:50px}
+@media(max-width:900px){.studio{grid-template-columns:1fr}}
+.studio .frame{border-radius:18px;background:var(--wall);padding:clamp(12px,3vw,32px)}
+.studio .frame img{border-radius:10px;box-shadow:0 24px 50px rgba(0,0,0,.4);transition:opacity .2s}
+.studio ul{list-style:none;display:grid;gap:12px;margin-top:22px}
+.studio li{padding-left:22px;position:relative;color:var(--mute)}
+.studio li::before{content:"";position:absolute;left:0;top:10px;width:8px;height:8px;border-radius:2px;background:var(--blue)}
+.studio li b{color:var(--ink)}
+.render{font-size:13px;color:var(--dim);margin-top:12px}
+.docks{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.docks figure{background:var(--wall);border-radius:12px;padding:18px 12px 10px}
+.docks figure.lightwall{background:linear-gradient(150deg,#dfe6f7,#b9c6e8)}
+.docks figcaption{font-size:12px;color:rgba(255,255,255,.75);text-align:center;margin-top:8px}
+.docks .lightwall figcaption{color:#2b3550}
+@media(max-width:600px){.docks{grid-template-columns:1fr}}
+
+/* windows */
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:50px}
+@media(max-width:900px){.grid4{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.grid4{grid-template-columns:1fr}}
+.grid4 div{background:var(--card);padding:24px}
+.grid4 h4{font-size:15.5px;font-weight:700}
+.grid4 p{font-size:14.5px;color:var(--mute);margin-top:5px}
+kbd{font-family:var(--mono);font-size:12px;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:0 5px;background:var(--bg)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}
+@media(max-width:900px){.pair{grid-template-columns:1fr}}
+
+/* privacy */
+.priv{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:50px;align-items:start}
+@media(max-width:900px){.priv{grid-template-columns:1fr;gap:30px}}
+.nums div{display:grid;grid-template-columns:52px 1fr;padding:18px 0;border-top:1px solid var(--line)}
+.nums div:last-child{border-bottom:1px solid var(--line)}
+.nums b{font-family:var(--mono);font-weight:500;color:var(--blue);font-size:14px;padding-top:2px}
+
+/* faq */
+.faq{margin-top:44px;border-top:1px solid var(--line);max-width:880px}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;padding:21px 40px 21px 0;font-size:18px;font-weight:700;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:4px;top:16px;font-size:26px;font-weight:300;color:var(--dim);transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{color:var(--mute);padding:0 40px 22px 0;max-width:740px}
+
+/* feedback */
+.fb{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px}
+@media(max-width:900px){.fb{grid-template-columns:1fr;gap:30px}}
+form{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;display:grid;gap:16px}
+label{display:grid;gap:6px;font-size:13px;font-weight:600;color:var(--mute)}
+input,textarea,select{font:inherit;font-size:15px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;outline:none;width:100%}
+input:focus,textarea:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue2)}
+textarea{min-height:92px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:520px){.row{grid-template-columns:1fr}}
+.kind{display:flex;gap:6px}
+.kind input{position:absolute;opacity:0;width:1px}
+.kind label{display:block;font-size:14px;border:1px solid var(--line);border-radius:9px;padding:7px 13px;cursor:pointer;color:var(--mute)}
+.kind input:checked+label{background:var(--ink);color:var(--onink);border-color:var(--ink)}
+.kind input:focus-visible+label{outline:2px solid var(--blue)}
+.small{font-size:13px;color:var(--dim)}
+.dundie{margin-top:28px;display:grid;grid-template-columns:64px 1fr;gap:16px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.dundie svg{width:64px;height:64px}
+.dundie b{display:block;font-weight:800}
+.dundie span{font-size:14.5px;color:var(--mute)}
+.fsteps{list-style:none;counter-reset:f;display:grid;gap:12px;margin-top:26px}
+.fsteps li{counter-increment:f;position:relative;padding-left:40px;color:var(--mute);min-height:26px}
+.fsteps li::before{content:counter(f);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:50%;background:var(--blue2);color:var(--blue);font-weight:800;font-size:13px;display:grid;place-items:center}
+.fsteps li b{color:var(--ink)}
+.ilink{color:var(--blue);font-weight:700;text-decoration:none}
+.ilink:hover{text-decoration:underline}
+.seg{display:inline-flex;align-items:center;align-self:start;height:auto;gap:2px;background:var(--bg2);border-radius:10px;padding:3px;justify-self:start;flex-wrap:wrap}
+.seg button{font:inherit;font-size:14px;font-weight:700;background:none;border:0;color:var(--mute);padding:7px 14px;border-radius:8px;cursor:pointer}
+.seg.small button{font-size:13px;font-weight:600;padding:5px 11px}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.lbl{font-size:13px;font-weight:600;color:var(--mute);margin-bottom:-8px}
+.only-bug,.only-idea{display:grid;gap:16px}
+.only-bug[hidden],.only-idea[hidden],[hidden]{display:none!important}
+.ferr{color:#d4483b;font-size:14px;font-weight:600;min-height:0}
+.ferr:empty{display:none}
+.factions{display:flex;gap:10px;flex-wrap:wrap}
+.result{display:none;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px}
+.result.show{display:block}
+.result pre{font-family:var(--mono);font-size:12.5px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px;white-space:pre-wrap;margin:12px 0;max-height:260px;overflow:auto}
+
+footer{border-top:1px solid var(--line);padding:34px 0 44px;font-size:14px;color:var(--dim)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.rv{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}.capture img{transform:translate(-50%,0)}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="skip">Pular para o conteúdo</a>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="logo.png" width="28" height="28" alt="">Dockn't</a>
+    <nav class="tabsTop" aria-label="Páginas"><a href="index.html" class="on" aria-current="page" data-i18n="tabP">Produto</a><a href="releases.html">Release notes</a></nav>
+    <nav class="links" aria-label="Seções">
+      <a href="#produto" data-i18n="n1">Visão geral</a>
+      <a href="#widgets">Widgets</a>
+      <a href="#studio">Dock Studio</a>
+      <a href="#windows">Windows</a>
+      <a href="#privacidade" data-i18n="n4">Privacidade</a>
+      <a href="#duvidas" data-i18n="n5">Dúvidas</a>
+      <a href="#feedback" data-i18n="n6">Reportar bug</a>
+    </nav>
+    <button class="themeBtn" id="themeBtn" type="button"></button>
+    <button class="lang" id="lang" type="button">English</button>
+    <button class="menuBtn" id="menuBtn" type="button" aria-expanded="false">Menu</button>
+  </div>
+  <nav class="mob" id="mob" aria-label="Menu">
+    <a href="releases.html">Release notes</a><a href="#produto" data-i18n="n1">Visão geral</a><a href="#widgets">Widgets</a><a href="#studio">Dock Studio</a><a href="#windows">Windows</a><a href="#privacidade" data-i18n="n4">Privacidade</a><a href="#duvidas" data-i18n="n5">Dúvidas</a><a href="#feedback" data-i18n="n6">Reportar bug</a>
+  </nav>
+</header>
+
+<main id="main">
+<div class="wrap hero" id="top">
+  <span class="pill rv"><i></i><span data-i18n="pill">Em preparação para a Microsoft Store</span></span>
+  <h1 class="rv" data-i18n="h1">Isto não é<br><em class="it">uma dock.</em></h1>
+  <p class="lede rv" data-i18n="lede">É uma barra nativa para o Windows 11, feita em Rust, com seus apps e widgets que mostram o que está acontecendo. Os dados ficam no seu computador. O nome é ironia.</p>
+  <div class="ctas rv"><a class="btn dark" href="#produto" data-i18n="cta1">Ver por dentro</a><a class="btn" href="releases.html" data-i18n="cta2">Release notes</a></div>
+  <figure class="capture rv"><span class="tag" data-i18n="tag">captura real · Windows 11</span><img src="shots/real-dock.png" width="760" height="76" alt="Dockn't rodando no Windows 11"></figure>
+  <figcaption class="capnote" data-i18n="capnote">Captura de tela real, sexta-feira, 13h03. Horário de almoço. Ninguém viu nada.</figcaption>
+  <div class="th rv"><q data-i18n="q1">“A gente não chama de dock. A gente chama de… uma barra. Com seus apps. Que fica embaixo. <i>[pausa]</i> É uma dock.”</q><div class="chyron"><b>Atylla Azevedo</b><span data-i18n="q1r">Fundador, Arkhenet Labs</span></div></div>
+</div>
+
+<section id="produto"><div class="wrap">
+  <div class="eyebrow rv" data-i18n="e1">Visão geral</div>
+  <h2 class="rv" data-i18n="h2a">A barra de tarefas mostra o que está aberto. <em class="it">O Dockn't mostra o que está acontecendo.</em></h2>
+  <p class="sub rv" data-i18n="s2a">Os apps de sempre de um lado, os widgets do outro, e tudo se atualiza só quando muda.</p>
+  <div class="over3">
+    <article class="oc rv"><div class="pic green"><div class="crop" style="width:300px;background-position:-10px -7px"></div></div><div class="txt"><h3 data-i18n="o1h">Seus apps</h3><p data-i18n="o1p">Fixe, reordene e solte arquivos nos ícones. Os apps abertos aparecem depois de um divisor, com prévia das janelas.</p></div></article>
+    <article class="oc rv"><div class="pic green"><div class="crop" style="width:300px;background-position:-340px -7px"></div></div><div class="txt"><h3 data-i18n="o2h">Widgets ao vivo</h3><p data-i18n="o2p">Relógio, agenda, música, Pomodoro, bateria e mais 30. Clique em um e ele abre um painel.</p></div></article>
+    <article class="oc rv"><div class="pic"><img src="shots/studio-look.png" width="956" height="676" alt="" style="border-radius:8px;box-shadow:0 12px 30px rgba(0,0,0,.4);max-height:160px;width:auto"></div><div class="txt"><h3 data-i18n="o3h">Do seu jeito</h3><p data-i18n="o3p">Tamanho, temas, cores e comportamento, ajustados no Dock Studio com prévia ao vivo.</p></div></article>
+  </div>
+</div></section>
+
+<section class="alt" id="widgets"><div class="wrap">
+  <div class="eyebrow rv">Widgets</div>
+  <h2 class="rv" data-i18n="h2b">37 widgets. <em class="it">Cada um do tamanho que precisa.</em></h2>
+  <p class="sub rv" data-i18n="s2b">Um quadrado quando é só um número. Uma faixa larga quando tem mais coisa pra dizer. A maioria tem de uma a quatro larguras.</p>
+  <div class="sizes">
+    <div class="rv">
+      <p style="font-weight:700" data-i18n="szP">Escolha um widget e uma largura</p>
+      <div class="pick" id="szW"></div>
+      <div class="pick" id="szS"><button data-z="S" type="button">1</button><button data-z="M" type="button">2</button><button data-z="L" type="button" class="on">3</button><button data-z="XL" type="button">4</button></div>
+      <p class="twss" data-i18n="twss">— Dá pra deixar maior?<br>— Foi o que ela disse.</p>
+    </div>
+    <div class="stage rv"><div class="bar"><div class="tile S" style="background-image:url(shots/w-clock.png)"></div><div class="tile L" id="szTile"></div><div class="tile S" style="background-image:url(shots/w-battery.png)"></div></div><small data-i18n="renderTag">renderizado pelo código do Dockn't</small></div>
+  </div>
+  <div class="th rv"><q data-i18n="q2">“Coloquei o widget de água no computador do escritório inteiro. Ninguém passou a beber mais água. Mas agora todo mundo sabe que não bebeu.”</q><div class="chyron"><b data-i18n="q2n">Gerente regional</b><span data-i18n="q2r">Iniciativa de bem-estar, fase 1 de 1</span></div></div>
+  <div class="cats" id="cats"></div>
+  <div class="wgrid" id="wgrid"></div>
+</div></section>
+
+<section id="studio"><div class="wrap">
+  <div class="eyebrow rv">Dock Studio</div>
+  <h2 class="rv" data-i18n="h2c">Uma janela pra ajustar tudo. <em class="it">Nenhuma reunião pra aprovar.</em></h2>
+  <div class="studio">
+    <div class="rv">
+      <p class="sub" style="margin-top:0" data-i18n="s2c">As mudanças valem na hora, e a prévia no topo mostra a dock como ela vai ficar.</p>
+      <div class="pick" id="sTab" style="margin-top:24px"></div>
+      <ul>
+        <li data-i18n="sl1"></li>
+        <li data-i18n="sl2"></li>
+        <li data-i18n="sl3"></li>
+      </ul>
+    </div>
+    <figure class="rv"><div class="frame"><img id="sImg" src="shots/studio-dock.png" width="956" height="676" alt="Dock Studio"></div><div class="docks"><figure><img src="shots/dock.png" width="642" height="60" alt=""><figcaption data-i18n="dkDark"></figcaption></figure><figure class="lightwall"><img src="shots/dock-light.png" width="648" height="60" alt=""><figcaption data-i18n="dkLight"></figcaption></figure></div><figcaption class="render" data-i18n="renderNote">Renderização da interface pelo próprio código do Dockn't, com dados de demonstração.</figcaption></figure>
+  </div>
+</div></section>
+
+<section class="alt" id="windows"><div class="wrap">
+  <div class="eyebrow rv">Windows</div>
+  <h2 class="rv" data-i18n="h2d">Feita pro Windows. <em class="it">Não pra imitar o Mac.</em></h2>
+  <p class="sub rv" data-i18n="s2d">Convive com a barra de tarefas ou toma o lugar dela. Não injeta nada no Explorer e não pede administrador.</p>
+  <div class="grid4 rv" id="grid4"></div>
+  <div class="pair">
+    <div class="th sm rv"><q data-i18n="q3">“Minha única função é devolver a barra de tarefas se o Dockn't fechar. Ele nunca fechou. <i>[pausa]</i> Eu continuo vindo trabalhar.”</q><div class="chyron"><b data-i18n="q3n">O guarda da barra de tarefas</b><span data-i18n="q3r">Assistente do gerente regional</span></div></div>
+    <div class="th sm rv"><q data-i18n="q4">“Abri o Gerenciador de Tarefas pra ver quanto ele consome. Demorei pra achar. <i>[pausa]</i> Pela CPU, eu quero dizer.”</q><div class="chyron"><b data-i18n="q4n">Contabilidade</b><span data-i18n="q4r">Mede tudo duas vezes</span></div></div>
+  </div>
+</div></section>
+
+<section id="privacidade"><div class="wrap">
+  <div class="eyebrow rv" data-i18n="n4">Privacidade</div>
+  <h2 class="rv" data-i18n="h2e">O Dockn't <em class="it">não sabe quem você é.</em></h2>
+  <div class="priv">
+    <div class="rv">
+      <p class="sub" style="margin:0 0 20px" data-i18n="s2e">Sem conta, sem login, sem telemetria e sem anúncio. A internet só entra quando você liga:</p>
+      <div class="nums">
+        <div><b>01</b><p data-i18n="pv1">Clima e notícias, se você ligar os widgets de internet. Vêm desligados.</p></div>
+        <div><b>02</b><p data-i18n="pv2">O GitHub, pelo GitHub CLI que já está no seu PC.</p></div>
+        <div><b>03</b><p data-i18n="pv3">O chat de IA, com a sua própria chave, guardada no Gerenciador de Credenciais do Windows.</p></div>
+      </div>
+      <p style="margin-top:18px;color:var(--mute)" data-i18n="pvEnd">O resto fica em <code style="font-family:var(--mono);font-size:.85em">%LOCALAPPDATA%\ArkhenetLabs\Docknt</code>, num arquivo de configuração que você pode abrir.</p>
+    </div>
+    <div class="th sm rv" style="min-height:330px"><q data-i18n="q5">“Me pediram uma apresentação sobre a política de dados. A política é: não tem dados. Foi a reunião mais curta da minha carreira.”</q><div class="chyron"><b data-i18n="q5n">Recursos Humanos</b><span data-i18n="q5r">Ninguém pergunta como ele está</span></div></div>
+  </div>
+</div></section>
+
+<section class="alt" id="duvidas"><div class="wrap">
+  <div class="eyebrow rv" data-i18n="n5">Dúvidas</div>
+  <h2 class="rv" data-i18n="h2f">O que perguntam <em class="it">antes da reunião acabar.</em></h2>
+  <div class="th rv" style="margin-top:40px"><q data-i18n="q6">“Quando lança? Em breve. Eu sei a data. <i>[olha para a câmera]</i> Eu não sei a data.”</q><div class="chyron"><b data-i18n="q6n">Marketing</b><span data-i18n="q6r">Departamento de uma pessoa</span></div></div>
+  <div class="faq rv" id="faq"></div>
+</div></section>
+
+<section id="feedback"><div class="wrap fb">
+  <div>
+    <div class="eyebrow rv" data-f="eyebrow"></div>
+    <h2 class="rv" data-f="h2"></h2>
+    <p class="sub rv" data-f="sub"></p>
+    <ol class="fsteps rv"><li data-f="st1"></li><li data-f="st2"></li><li data-f="st3"></li></ol>
+    <p class="rv" style="margin-top:18px"><a class="ilink" id="openIssues" target="_blank" rel="noopener" data-f="open"></a></p>
+    <div class="dundie rv"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 8h24v10a12 12 0 0 1-24 0z" fill="#e9b949" stroke="#9a7420" stroke-width="2"/><path d="M20 12h-7a7 7 0 0 0 7 9M44 12h7a7 7 0 0 1-7 9" fill="none" stroke="#9a7420" stroke-width="2"/><path d="M29 30h6v10h-6z" fill="#c99a2e"/><path d="M22 40h20v6H22z" fill="#2b2b2b"/><path d="M18 46h28v8H18z" fill="#1a1a1a"/><circle cx="32" cy="15" r="4" fill="#fff3c4"/></svg><div><b data-f="dH"></b><span data-f="dP"></span></div></div>
+  </div>
+  <form id="fbForm" class="rv" novalidate>
+    <div class="seg" role="tablist" id="fKind"><button type="button" role="tab" data-k="bug" class="on" data-f="kBug"></button><button type="button" role="tab" data-k="idea" data-f="kIdea"></button></div>
+    <label><span data-f="lTitle"></span><input name="title" id="fTitle" required maxlength="120"></label>
+    <a class="ilink small" id="similar" target="_blank" rel="noopener" hidden></a>
+    <div class="only-bug">
+      <div class="row">
+        <label><span data-f="lArea"></span><select name="area" id="fArea"></select></label>
+        <label><span data-f="lVersion"></span><select name="version" id="fVersion"></select></label>
+      </div>
+      <label><span data-f="lWhat"></span><textarea name="what" id="fWhat" required></textarea></label>
+      <label><span data-f="lExpected"></span><textarea name="expected" id="fExpected" rows="2"></textarea></label>
+      <label><span data-f="lSteps"></span><textarea name="steps" id="fSteps"></textarea></label>
+      <div class="lbl" data-f="lFreq"></div>
+      <div class="seg small" id="fFreq"></div>
+      <div class="row">
+        <label><span data-f="lWin"></span><input name="windows" id="fWin"></label>
+        <label><span data-f="lDisplay"></span><input name="display" id="fDisplay"></label>
+      </div>
+      <p class="small" data-f="autoNote"></p>
+    </div>
+    <div class="only-idea" hidden>
+      <label><span data-f="lProblem"></span><textarea name="problem" id="fProblem" required></textarea></label>
+      <label><span data-f="lIdea"></span><textarea name="idea" id="fIdea" required></textarea></label>
+    </div>
+    <p class="ferr" id="fErr" role="alert"></p>
+    <div class="factions"><button class="btn dark" type="submit" id="fSend"></button><button class="btn" type="button" id="fSave" data-f="save"></button></div>
+    <p class="small" id="fNote"></p>
+  </form>
+</div></section>
+</main>
+
+<footer><div class="wrap"><span>© 2026 Arkhenet Labs · <span data-i18n="rights">Todos os direitos reservados</span></span><span data-i18n="foot">Nenhuma dock foi ferida na produção deste site.</span></div></footer>
+
+<script src="site-config.js"></script>
+<script>
+const REPO=((window.DOCKNT_SITE||{}).feedbackRepository||'').trim();
+const T={
+pt:{
+skip:"Pular para o conteúdo",tabP:"Produto",n1:"Visão geral",n4:"Privacidade",n5:"Dúvidas",n6:"Reportar bug",
+pill:"Em preparação para a Microsoft Store",
+h1:"Isto não é<br><em class='it'>uma dock.</em>",
+lede:"É uma barra nativa para o Windows 11, feita em Rust, com seus apps e widgets que mostram o que está acontecendo. Os dados ficam no seu computador. O nome é ironia.",
+cta1:"Ver por dentro",cta2:"Release notes",tag:"captura real · Windows 11",
+capnote:"Captura de tela real, sexta-feira, 13h03. Horário de almoço. Ninguém viu nada.",
+q1:"“A gente não chama de dock. A gente chama de… uma barra. Com seus apps. Que fica embaixo. <i>[pausa]</i> É uma dock.”",q1r:"Fundador, Arkhenet Labs",
+e1:"Visão geral",h2a:"A barra de tarefas mostra o que está aberto. <em class='it'>O Dockn't mostra o que está acontecendo.</em>",
+s2a:"Os apps de sempre de um lado, os widgets do outro, e tudo se atualiza só quando muda.",
+o1h:"Seus apps",o1p:"Fixe, reordene e solte arquivos nos ícones. Os apps abertos aparecem depois de um divisor, com prévia das janelas.",
+o2h:"Widgets ao vivo",o2p:"Relógio, agenda, música, Pomodoro, bateria e mais 30. Clique em um e ele abre um painel.",
+o3h:"Do seu jeito",o3p:"Oito temas, cores, placas, perfis por monitor e comportamento, ajustados no Dock Studio com prévia ao vivo.",
+h2b:"37 widgets. <em class='it'>Cada um do tamanho que precisa.</em>",
+s2b:"Um quadrado quando é só um número. Uma faixa larga quando tem mais coisa pra dizer. A maioria tem de uma a quatro larguras.",
+szP:"Escolha um widget e uma largura",twss:"— Dá pra deixar maior?<br>— Foi o que ela disse.",renderTag:"renderizado pelo código do Dockn't",
+q2:"“Coloquei o widget de água no computador do escritório inteiro. Ninguém passou a beber mais água. Mas agora todo mundo sabe que não bebeu.”",q2n:"Gerente regional",q2r:"Iniciativa de bem-estar, fase 1 de 1",
+cats:["Todos","Tempo","Foco","Sistema","Arquivos","Internet"],
+h2c:"Uma janela pra ajustar tudo. <em class='it'>Nenhuma reunião pra aprovar.</em>",
+s2c:"As mudanças valem na hora, e a prévia no topo mostra a dock como ela vai ficar.",
+t2:"Aparência",t3:"Comportamento",t4:"Sobre",dark:"Escuro",light:"Claro",
+sl1:"<b>Oito temas:</b> vidro escuro, claro, sólido, neon, papel, alto contraste, floresta e crepúsculo.",sl2:"<b>Personalizar:</b> placas, pulo, contorno, halo, reflexo, ampliação e uma cor só sua.",sl3:"<b>Perfis por monitor:</b> cada tela com seus itens, trocados pelos pontos na própria dock.",
+stabs:["Dock","Perfis","Aparência","Personalizar","Comportamento","Configurações","Sobre"],dkDark:"Vidro escuro",dkLight:"Claro",themes:["Tema: automático","Tema: claro","Tema: escuro"],
+renderNote:"Telas e docks renderizadas pelo próprio código do Dockn't 0.1.24-beta, com dados de demonstração.",
+h2d:"Feita pro Windows. <em class='it'>Não pra imitar o Mac.</em>",
+s2d:"Convive com a barra de tarefas ou toma o lugar dela. Não injeta nada no Explorer e não pede administrador.",
+g4:[["Busca","<kbd>Alt</kbd> + <kbd>Espaço</kbd> acha apps, arquivos e configurações, e faz contas."],["Bandeja","Os ícones da área de notificação podem morar na dock."],["Pilhas","Pastas como Downloads abrem direto da barra."],["Menus completos","Botão direito com fechar janela, abrir outra, mostrar na pasta."],["Selos","Contagem de notificações nos ícones, como na barra do Windows."],["Tela cheia","Some em jogos e vídeos e volta quando você sai."],["Vários monitores","A barra acompanha a tela em que você está."],["Acessibilidade","Respeita os efeitos de animação do Windows e a escala de DPI."]],
+q3:"“Minha única função é devolver a barra de tarefas se o Dockn't fechar. Ele nunca fechou. <i>[pausa]</i> Eu continuo vindo trabalhar.”",q3n:"O guarda da barra de tarefas",q3r:"Assistente do gerente regional",
+q4:"“Abri o Gerenciador de Tarefas pra ver quanto ele consome. Demorei pra achar. <i>[pausa]</i> Pela CPU, eu quero dizer.”",q4n:"Contabilidade",q4r:"Mede tudo duas vezes",
+h2e:"O Dockn't <em class='it'>não sabe quem você é.</em>",
+s2e:"Sem conta, sem login, sem telemetria e sem anúncio. A internet só entra quando você liga:",
+pv1:"Clima e notícias, se você ligar os widgets de internet. Vêm desligados.",pv2:"O GitHub, pelo GitHub CLI que já está no seu PC.",pv3:"O chat de IA, com a sua própria chave, guardada no Gerenciador de Credenciais do Windows.",
+pvEnd:"O resto fica em <code style='font-family:var(--mono);font-size:.85em'>%LOCALAPPDATA%\\ArkhenetLabs\\Docknt</code>, num arquivo de configuração que você pode abrir.",
+q5:"“Me pediram uma apresentação sobre a política de dados. A política é: não tem dados. Foi a reunião mais curta da minha carreira.”",q5n:"Recursos Humanos",q5r:"Ninguém pergunta como ele está",
+h2f:"O que perguntam <em class='it'>antes da reunião acabar.</em>",
+q6:"“Quando lança? Em breve. Eu sei a data. <i>[olha para a câmera]</i> Eu não sei a data.”",q6n:"Marketing",q6r:"Departamento de uma pessoa",
+faq:[["É uma dock?","É. O nome foi decidido numa sexta, às 17h40, e ninguém teve energia pra discordar."],
+["É uma cópia da Dock do Mac?","Não. É feita pro Windows, convive com a barra de tarefas e foi pensada em torno de widgets."],
+["Pesa no computador?","Não deveria. Ele só redesenha quando algo muda e não tem navegador escondido. Os números oficiais saem junto com a versão final."],
+["E se ele travar?","A barra de tarefas do Windows volta sozinha. Tem um processo separado só pra isso."],
+["Quando lança? Quanto custa?","Em breve, na Microsoft Store. Data e preço ainda estão em reunião. A reunião foi remarcada. Acompanhe pelas release notes."],
+["Precisa de administrador?","Não. Ele não mexe no Explorer nem no sistema."],
+["Onde reporto um problema?","No formulário logo abaixo."]],
+h2g:"Achou um problema? <em class='it'>Conta pra gente.</em>",
+rights:"Todos os direitos reservados",foot:"Nenhuma dock foi ferida na produção deste site.",lang:"English",
+},
+en:{
+skip:"Skip to content",tabP:"Product",n1:"Overview",n4:"Privacy",n5:"FAQ",n6:"Report a bug",
+pill:"Getting ready for the Microsoft Store",
+h1:"This is not<br><em class='it'>a dock.</em>",
+lede:"It's a native bar for Windows 11, written in Rust, with your apps and widgets that show what's going on. Your data stays on your computer. The name is irony.",
+cta1:"Look inside",cta2:"Release notes",tag:"real capture · Windows 11",
+capnote:"Real screenshot, Friday, 1:03 pm. Lunch break. Nobody saw anything.",
+q1:"“We don't call it a dock. We call it… a bar. With your apps. That sits at the bottom. <i>[pause]</i> It's a dock.”",q1r:"Founder, Arkhenet Labs",
+e1:"Overview",h2a:"The taskbar shows what's open. <em class='it'>Dockn't shows what's going on.</em>",
+s2a:"Your usual apps on one side, widgets on the other, and everything updates only when it changes.",
+o1h:"Your apps",o1p:"Pin, reorder and drop files on icons. Running apps appear after a divider, with window previews.",
+o2h:"Live widgets",o2p:"Clock, calendar, music, Pomodoro, battery and 30 more. Click one and it opens a panel.",
+o3h:"Your way",o3p:"Eight themes, colors, plates, per-monitor profiles and behavior, tuned in Dock Studio with a live preview.",
+h2b:"37 widgets. <em class='it'>Each one as big as it needs.</em>",
+s2b:"A square when it's just a number. A wide strip when there's more to say. Most have one to four widths.",
+szP:"Pick a widget and a width",twss:"— Can it get bigger?<br>— That's what she said.",renderTag:"rendered by Dockn't's own code",
+q2:"“I put the water widget on every computer in the office. Nobody drinks more water. But now everybody knows they didn't.”",q2n:"Regional manager",q2r:"Wellness initiative, phase 1 of 1",
+cats:["All","Time","Focus","System","Files","Internet"],
+h2c:"One window to tune everything. <em class='it'>No meeting to approve it.</em>",
+s2c:"Changes apply instantly, and the preview at the top shows the dock exactly as it will look.",
+t2:"Appearance",t3:"Behavior",t4:"About",dark:"Dark",light:"Light",
+sl1:"<b>Eight themes:</b> dark glass, light, solid, neon, paper, high contrast, forest and dusk.",sl2:"<b>Personalize:</b> plates, bounce, outline, halo, reflection, magnification and a color of your own.",sl3:"<b>Per-monitor profiles:</b> each screen with its own items, switched from dots on the dock.",
+stabs:["Dock","Profiles","Appearance","Personalize","Behavior","Settings","About"],dkDark:"Dark glass",dkLight:"Light",themes:["Theme: auto","Theme: light","Theme: dark"],
+renderNote:"Screens and docks rendered by Dockn't 0.1.24-beta's own code, with demo data.",
+h2d:"Made for Windows. <em class='it'>Not to imitate the Mac.</em>",
+s2d:"It lives alongside the taskbar or takes its place. It injects nothing into Explorer and never asks for admin.",
+g4:[["Search","<kbd>Alt</kbd> + <kbd>Space</kbd> finds apps, files and settings, and does math."],["Tray","Your notification-area icons can live on the dock."],["Stacks","Folders like Downloads open right from the bar."],["Full menus","Right-click to close a window, open another, show in folder."],["Badges","Notification counts on icons, like the Windows taskbar."],["Fullscreen","Hides for games and videos and returns when you leave."],["Multiple monitors","The bar follows the screen you're on."],["Accessibility","Respects Windows animation effects and DPI scaling."]],
+q3:"“My only job is to bring the taskbar back if Dockn't closes. It never has. <i>[pause]</i> I keep coming to work.”",q3n:"The taskbar guard",q3r:"Assistant to the regional manager",
+q4:"“I opened Task Manager to see how much it uses. It took me a while to find it. <i>[pause]</i> In the CPU column, I mean.”",q4n:"Accounting",q4r:"Measures everything twice",
+h2e:"Dockn't <em class='it'>doesn't know who you are.</em>",
+s2e:"No account, no login, no telemetry, no ads. The internet only comes in when you turn it on:",
+pv1:"Weather and news, if you turn on Internet widgets. They're off by default.",pv2:"GitHub, through the GitHub CLI already on your PC.",pv3:"The AI chat, with your own key, kept in Windows Credential Manager.",
+pvEnd:"Everything else lives in <code style='font-family:var(--mono);font-size:.85em'>%LOCALAPPDATA%\\ArkhenetLabs\\Docknt</code>, in a config file you can open.",
+q5:"“They asked me for a presentation on the data policy. The policy is: there's no data. Shortest meeting of my career.”",q5n:"Human Resources",q5r:"Nobody asks how he's doing",
+h2f:"What people ask <em class='it'>before the meeting ends.</em>",
+q6:"“When does it launch? Soon. I know the date. <i>[looks at the camera]</i> I don't know the date.”",q6n:"Marketing",q6r:"A one-person department",
+faq:[["Is it a dock?","Yes. The name was decided on a Friday at 5:40 pm and nobody had the energy to disagree."],
+["Is it a copy of the Mac Dock?","No. It's made for Windows, lives alongside the taskbar and is built around widgets."],
+["Is it heavy?","It shouldn't be. It only redraws when something changes and has no hidden browser. Official numbers ship with the final version."],
+["What if it crashes?","The Windows taskbar comes back on its own. There's a separate process just for that."],
+["When does it launch? How much?","Soon, on the Microsoft Store. Date and price are still in a meeting. The meeting was rescheduled. Follow the release notes."],
+["Does it need admin rights?","No. It doesn't touch Explorer or the system."],
+["Where do I report a problem?","In the form right below."]],
+h2g:"Found a problem? <em class='it'>Tell us.</em>",
+rights:"All rights reserved",foot:"No docks were harmed in the making of this site.",lang:"Português",
+}};
+
+// [file, pt, en, pt desc, en desc, category: 1 time, 2 focus, 3 system, 4 files, 5 internet]
+const W=[
+["clock","Relógio","Clock","Hora e data. Na largura máxima, a semana do ano.","Time and date. At full width, the week of the year.",1],
+["calendar","Calendário","Calendar","O próximo compromisso no ícone.","Your next event on the icon.",1],
+["countdown","Contagem","Countdown","Quantos dias faltam pra data que importa.","Days until the date that matters.",1],
+["timeprogress","Progresso do tempo","Time progress","Quanto do dia, da semana, do mês e do ano já foi.","How much of the day, week, month and year is gone.",1],
+["stopwatch","Cronômetro","Stopwatch","Conta pra cima, com voltas.","Counts up, with laps.",1],
+["timer","Timer","Timer","Contagem regressiva com anel de progresso.","Countdown with a progress ring.",2],
+["pomodoro","Pomodoro","Pomodoro","Foco e pausa, com os ciclos do dia marcados.","Focus and break, with the day's cycles marked.",2],
+["reminders","Lembretes","Reminders","O que vence primeiro. Marca como feito ali mesmo.","What's due first. Tick it off right there.",2],
+["note","Nota","Note","Um recado que fica na barra.","A note that stays on the bar.",2],
+["water","Água","Drink water","Um copo por vez até a meta do dia.","One glass at a time toward today's goal.",2],
+["keyboardlock","Trava de teclado","Keyboard lock","Trava teclado e mouse pra limpar.","Locks keys and mouse for cleaning.",2],
+["music","Música","Music","O que está tocando, com controles.","What's playing, with controls.",3],
+["battery","Bateria","Battery","A carga e quanto tempo ela ainda dá.","Charge and how long it'll last.",3],
+["activity","Atividade","Activity","Processador e memória, ao vivo.","CPU and memory, live.",3],
+["network","Rede","Network","O que está subindo e descendo agora.","What's going up and down right now.",3],
+["status","Status do sistema","System status","Wi-Fi, volume e bateria juntos.","Wi-Fi, volume and battery together.",3],
+["notifications","Notificações","Notifications","As últimas notificações deste PC.","The latest notifications on this PC.",3],
+["fans","Ventoinhas","Fans","A rotação das ventoinhas, quando há sensor.","Fan speed, when there's a sensor.",3],
+["mascot","Mascote","Mascot","O Jujubs. Ele não faz nada. Todo escritório tem um.","Jujubs. He doesn't do anything. Every office has one.",3],
+["scenes","Cenas do dia","Daily scenes","Uma paisagem que acompanha a hora.","A landscape that follows the hour.",3],
+["files","Arquivos","Files","Os downloads que acabaram de chegar.","Downloads that just arrived.",4],
+["shelf","Prateleira","Shelf","Segura arquivos no meio de um arrasto.","Holds files in the middle of a drag.",4],
+["screenshots","Capturas","Screenshots","Os últimos prints, prontos pra arrastar.","Latest screenshots, ready to drag.",4],
+["clipboard","Área de transferência","Clipboard","O que você copiou por último.","What you copied last.",4],
+["collections","Coleções","App collections","Um ícone que guarda um grupo de apps.","One icon that holds a group of apps.",4],
+["shortcut","Atalho","Shortcut","Um atalho com ação rápida.","A shortcut with a quick action.",4],
+["nearby","Compartilhar por perto","Nearby sharing","O compartilhamento do Windows a um clique.","Windows sharing, one click away.",4],
+["colorpicker","Conta-gotas","Color picker","Pega qualquer cor da tela.","Picks any color on screen.",4],
+["emoji","Emoji","Emoji","Os que você mais usa, a um clique.","Your most used, one click away.",4],
+["converter","Conversor","Converter","Digite \"1,5 kg em lb\" e pronto.","Type \"1.5 kg to lb\" and done.",4],
+["weather","Clima","Weather","Temperatura e previsão de cinco dias.","Temperature and a five-day forecast.",5],
+["news","Notícias","News","As manchetes do dia.","Today's headlines.",5],
+["github","GitHub","GitHub","PRs abertos e o ano de contribuições.","Open PRs and a year of contributions.",5],
+["favorites","Favoritos","Favorites","Os sites que você abre todo dia.","The sites you open every day.",5],
+["claude","Uso do Claude","Claude usage","Quanto do plano já foi e quando zera.","How much of the plan is used and when it resets.",5],
+["aichat","Chat de IA","AI chat","Converse com a sua própria chave.","Chat with your own key.",5],
+["ifood","iFood","iFood","Seus pedidos salvos, pro almoço não virar reunião.","Your saved orders, so lunch doesn't become a meeting.",5],
+];
+const SZ=["weather","clock","music","pomodoro","github","calendar"];
+
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+let saved=null;try{saved=localStorage.getItem('docknt-lang')}catch(e){}
+let lang=T[saved]?saved:((navigator.language||'').toLowerCase().startsWith('pt')?'pt':'en');
+let szW='weather',szS='L',sTab='dock',cat=0;
+const nm=w=>lang==='pt'?w[1]:w[2];
+
+function grid(){$('#wgrid').innerHTML=W.filter(w=>!cat||w[5]===cat).map(w=>`<div class="wi"><div class="tile S" style="background-image:url(shots/w-${w[0]}.png)" role="img" aria-label="${nm(w)}"></div><div><h4>${nm(w)}</h4><p>${lang==='pt'?w[3]:w[4]}</p></div></div>`).join('')}
+function apply(){
+  const t=T[lang];document.documentElement.lang=lang==='pt'?'pt-BR':'en';
+  $$('[data-i18n]').forEach(el=>{if(t[el.dataset.i18n]!==undefined)el.innerHTML=t[el.dataset.i18n]});
+  $$('[data-ph]').forEach(el=>el.placeholder=t[el.dataset.ph]);
+  $('#lang').textContent=t.lang;
+  $('#faq').innerHTML=t.faq.map(([q,a],i)=>`<details${i===0?' open':''}><summary>${q}</summary><p>${a}</p></details>`).join('');
+  $('#grid4').innerHTML=t.g4.map(([h,p])=>`<div><h4>${h}</h4><p>${p}</p></div>`).join('');
+  $('#cats').innerHTML=`<div class="pick" style="margin:0">${t.cats.map((c,i)=>`<button type="button" data-c="${i}"${i===cat?' class="on"':''}>${c}</button>`).join('')}</div>`;
+  $('#szW').innerHTML=SZ.map(k=>`<button type="button" data-w="${k}"${k===szW?' class="on"':''}>${nm(W.find(w=>w[0]===k))}</button>`).join('');
+  fbApply();
+  $('#sTab').innerHTML=t.stabs.map((x,i)=>`<button type="button" data-s="${STABS[i]}"${STABS[i]===sTab?' class="on"':''}>${x}</button>`).join('');
+  paintTheme();
+  grid();
+}
+$('#lang').onclick=()=>{lang=lang==='pt'?'en':'pt';try{localStorage.setItem('docknt-lang',lang)}catch(e){}apply()};
+$('#menuBtn').onclick=()=>{const o=$('#mob').classList.toggle('open');$('#menuBtn').setAttribute('aria-expanded',o)};
+$$('#mob a').forEach(a=>a.addEventListener('click',()=>$('#mob').classList.remove('open')));
+$('#cats').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;cat=+b.dataset.c;$$('#cats button').forEach(x=>x.classList.toggle('on',x===b));grid()});
+
+// widget width demo (real renders cut at each width)
+function size(){const el=$('#szTile');el.className='tile '+szS;el.style.backgroundImage=`url(shots/w-${szW}.png)`}
+$('#szW').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;szW=b.dataset.w;$$('#szW button').forEach(x=>x.classList.toggle('on',x===b));size()});
+$('#szS').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;szS=b.dataset.z;$$('#szS button').forEach(x=>x.classList.toggle('on',x===b));size()});
+
+// Dock Studio: the seven real sections
+const STABS=['dock','profiles','look','personalize','behave','settings','about'];
+function studio(){const img=$('#sImg');img.style.opacity=.3;img.onload=()=>img.style.opacity=1;img.src='shots/studio-'+sTab+'.png'}
+$('#sTab').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;sTab=b.dataset.s;$$('#sTab button').forEach(x=>x.classList.toggle('on',x===b));studio()});
+STABS.forEach(n=>{const i=new Image();i.src='shots/studio-'+n+'.png'});
+
+// Site theme: automatic (follows Windows), light or dark.
+const THEMES=['auto','light','dark'];
+let theme='auto';try{const t=localStorage.getItem('docknt-theme');if(THEMES.includes(t))theme=t}catch(e){}
+function paintTheme(){if(theme==='auto')delete document.documentElement.dataset.theme;else document.documentElement.dataset.theme=theme;$('#themeBtn').textContent=T[lang].themes[THEMES.indexOf(theme)]}
+$('#themeBtn').onclick=()=>{theme=THEMES[(THEMES.indexOf(theme)+1)%3];try{localStorage.setItem('docknt-theme',theme)}catch(e){}paintTheme()};
+
+// nav border, reveal, active link
+const nav=$('#nav');addEventListener('scroll',()=>nav.classList.toggle('b',scrollY>8),{passive:true});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.1});
+$$('.rv').forEach(el=>io.observe(el));
+const links=$$('.links a');
+const so=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-45% 0px -50% 0px'});
+$$('section[id]').forEach(s=>so.observe(s));
+
+// Feedback: the form fills the public site repository's issue forms
+// (.github/ISSUE_TEMPLATE/bug.yml and sugestao.yml); nothing is sent from this page.
+const VERSIONS=['0.1.24-beta','0.1.12-beta','0.1.0-beta'];
+const AREAS=['Apps e ícones / Apps & icons','Widgets','Busca / Search','Bandeja e barra de tarefas / Tray & taskbar','Dock Studio','Vários monitores e perfis / Monitors & profiles','Desempenho / Performance','Outro / Other'];
+const FREQ=['Sempre / Always','Às vezes / Sometimes','Uma vez / Once'];
+const FB={
+pt:{eyebrow:"Reportar bug",h2:"Achou um problema? <em class='it'>Conta pra gente.</em>",
+sub:"Os relatos viram issues públicas no GitHub, onde você acompanha a correção. Prometemos não marcar uma reunião sobre isso.",
+st1:"<b>Descreva aqui.</b> Windows e escala da tela já vêm preenchidos.",st2:"<b>Revise no GitHub.</b> A issue abre pronta. Arraste um print se tiver.",st3:"<b>Acompanhe.</b> Você recebe aviso quando alguém responder ou corrigir.",
+open:"Ver issues abertas ↗",dH:"Prêmio Dundie de Melhor Relato de Bug",dP:"Todo mês, o relato mais claro ganha um Dundie. O troféu é imaginário. A gratidão é real.",
+kBug:"Bug",kIdea:"Sugestão",lTitle:"Resumo em uma linha",tBug:"A dock some depois que o PC volta da suspensão",tIdea:"Atalho de teclado para trocar de perfil",
+similar:"Procurar issues parecidas antes ↗",lArea:"Área",lVersion:"Versão do Dockn't",unknown:"Não sei",
+lWhat:"O que aconteceu?",lExpected:"O que você esperava?",lSteps:"Como reproduzir",pSteps:"1. \n2. \n3. ",lFreq:"Com que frequência?",freq:["Sempre","Às vezes","Uma vez"],
+lWin:"Windows",lDisplay:"Monitores e escala",autoNote:"Detectamos Windows e escala pelo navegador. Confira antes de continuar. A versão está em Dock Studio → Sobre.",
+lProblem:"Qual problema isso resolve?",lIdea:"Sua ideia",
+send:"Continuar no GitHub ↗",save:"Salvar como .txt",
+note:"Precisa de uma conta no GitHub para enviar. Nada sai desta página antes de você clicar em “Create” lá. Sem conta? Salve o relato e mande depois.",
+noRepo:"O canal público de issues ainda não foi configurado. Salve o relato como .txt por enquanto.",
+need:"Preencha o resumo e o que aconteceu.",needIdea:"Preencha o resumo, o problema e a ideia.",scale:"escala",screen:"tela"},
+en:{eyebrow:"Report a bug",h2:"Found a problem? <em class='it'>Tell us.</em>",
+sub:"Reports become public GitHub issues, where you can follow the fix. We promise not to schedule a meeting about it.",
+st1:"<b>Describe it here.</b> Windows and display scale are already filled in.",st2:"<b>Review on GitHub.</b> The issue opens ready. Drag in a screenshot if you have one.",st3:"<b>Follow along.</b> You get notified when someone replies or fixes it.",
+open:"See open issues ↗",dH:"The Dundie for Best Bug Report",dP:"Every month, the clearest report wins a Dundie. The trophy is imaginary. The gratitude is real.",
+kBug:"Bug",kIdea:"Suggestion",lTitle:"One-line summary",tBug:"Dock disappears after the PC wakes from sleep",tIdea:"A keyboard shortcut to switch profiles",
+similar:"Search similar issues first ↗",lArea:"Area",lVersion:"Dockn't version",unknown:"Not sure",
+lWhat:"What happened?",lExpected:"What did you expect?",lSteps:"Steps to reproduce",pSteps:"1. \n2. \n3. ",lFreq:"How often?",freq:["Always","Sometimes","Once"],
+lWin:"Windows",lDisplay:"Monitors and scale",autoNote:"We detected Windows and scale from your browser. Check them before continuing. The version is in Dock Studio → About.",
+lProblem:"What problem does this solve?",lIdea:"Your idea",
+send:"Continue on GitHub ↗",save:"Save as .txt",
+note:"You need a GitHub account to send it. Nothing leaves this page until you click “Create” there. No account? Save the report and send it later.",
+noRepo:"The public issue channel isn't set up yet. Save the report as .txt for now.",
+need:"Fill in the summary and what happened.",needIdea:"Fill in the summary, the problem and the idea.",scale:"scale",screen:"screen"}};
+let fbKind='bug',fbFreq=0;
+const AREA_PT=["Apps e ícones","Widgets","Busca","Bandeja e barra de tarefas","Dock Studio","Vários monitores e perfis","Desempenho","Outro"];
+const AREA_EN=["Apps & icons","Widgets","Search","Tray & taskbar","Dock Studio","Monitors & profiles","Performance","Other"];
+function fbApply(){
+  const f=FB[lang];
+  $$('[data-f]').forEach(el=>{if(f[el.dataset.f]!==undefined)el.innerHTML=f[el.dataset.f]});
+  $('#fTitle').placeholder=fbKind==='bug'?f.tBug:f.tIdea;$('#fSteps').placeholder=f.pSteps;
+  const a=$('#fArea').value;$('#fArea').innerHTML=(lang==='pt'?AREA_PT:AREA_EN).map((x,i)=>`<option value="${i}">${x}</option>`).join('');if(a)$('#fArea').value=a;
+  const v=$('#fVersion').value;$('#fVersion').innerHTML=VERSIONS.map(x=>`<option>${x}</option>`).join('')+`<option value="">${f.unknown}</option>`;if(v!=='')$('#fVersion').value=v||VERSIONS[0];
+  $('#fFreq').innerHTML=f.freq.map((x,i)=>`<button type="button" data-q="${i}"${i===fbFreq?' class="on"':''}>${x}</button>`).join('');
+  $('#fSend').textContent=f.send;$('#fSend').hidden=!REPO;
+  $('#fNote').textContent=REPO?f.note:f.noRepo;
+  const o=$('#openIssues');o.hidden=!REPO;if(REPO)o.href=`https://github.com/${REPO}/issues`;
+  similar();
+}
+function similar(){const t=$('#fTitle').value.trim(),el=$('#similar');el.hidden=!REPO||t.length<4;if(!el.hidden){el.textContent=FB[lang].similar;el.href=`https://github.com/${REPO}/issues?q=`+encodeURIComponent('is:issue '+t)}}
+$('#fTitle').addEventListener('input',similar);
+$('#fKind').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;fbKind=b.dataset.k;$$('#fKind button').forEach(x=>x.classList.toggle('on',x===b));
+  $('.only-bug').hidden=fbKind!=='bug';$('.only-idea').hidden=fbKind==='bug';$('#fErr').textContent='';fbApply()});
+$('#fFreq').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;fbFreq=+b.dataset.q;$$('#fFreq button').forEach(x=>x.classList.toggle('on',x===b))});
+// Prefill what the browser can tell: Windows 11 reports platform version 13 or later.
+(async()=>{let win='Windows';try{const h=await navigator.userAgentData.getHighEntropyValues(['platformVersion']);const major=parseInt(h.platformVersion,10);win=major>=13?'Windows 11':major>0?'Windows 10':'Windows'}catch(e){}
+  if(!$('#fWin').value)$('#fWin').value=win;
+  if(!$('#fDisplay').value)$("#fDisplay").value=`${Math.round(devicePixelRatio*100)}%`+(screen.width?` · ${screen.width}×${screen.height}`:"")})();
+function fbFields(){const v=id=>$(id).value.trim();
+  if(fbKind==='bug')return{template:'bug.yml',title:v('#fTitle'),area:AREAS[+$('#fArea').value],what:v('#fWhat'),expected:v('#fExpected'),steps:v('#fSteps'),frequency:FREQ[fbFreq],version:$('#fVersion').value,windows:v('#fWin'),display:v('#fDisplay')};
+  return{template:'sugestao.yml',title:v('#fTitle'),problem:v('#fProblem'),idea:v('#fIdea'),version:VERSIONS[0]}}
+function fbValid(d){const ok=d.template==='bug.yml'?d.title&&d.what:d.title&&d.problem&&d.idea;$('#fErr').textContent=ok?'':(d.template==='bug.yml'?FB[lang].need:FB[lang].needIdea);return ok}
+$('#fbForm').addEventListener('submit',e=>{e.preventDefault();const d=fbFields();if(!fbValid(d)||!REPO)return;
+  const q=new URLSearchParams();Object.entries(d).forEach(([k,v])=>{if(v)q.set(k,v)});
+  window.open(`https://github.com/${REPO}/issues/new?`+q,'_blank','noopener')});
+let fileUrl=null;
+$('#fSave').onclick=()=>{const d=fbFields();if(!fbValid(d))return;
+  const lines=Object.entries(d).filter(([k,v])=>k!=='template'&&v).map(([k,v])=>`${k}:\n${v}\n`);
+  if(fileUrl)URL.revokeObjectURL(fileUrl);fileUrl=URL.createObjectURL(new Blob([`Dockn't ${d.template==='bug.yml'?'bug':'suggestion'}\n\n`+lines.join('\n')],{type:'text/plain'}));
+  const a=document.createElement('a');a.href=fileUrl;a.download='docknt-feedback.txt';a.click()};
+
+apply();size();studio();
+</script>
+</body>
+</html>

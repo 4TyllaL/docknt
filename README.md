@@ -8,13 +8,11 @@ Na raiz do repositório de código: `python -m http.server 4173 --directory docs
 
 ## Publicar
 
-O código do Dockn't é privado. O site mora num repositório **público** à parte, com o conteúdo desta pasta na raiz (inclusive `.github/`), e o GitHub Pages publica a branch `main`, pasta `/`. Esse mesmo repositório recebe as issues dos visitantes. Nunca torne público o repositório do produto.
+O código do Dockn't é privado. O site mora num repositório **público** à parte, com o conteúdo desta pasta na raiz (inclusive `.github/`), e o GitHub Pages publica a branch `main`, pasta `/`. Nunca torne público o repositório do produto.
 
-## Reportar bug
+## Feedback
 
-O formulário de `index.html` preenche os modelos de issue de `.github/ISSUE_TEMPLATE/` (`bug.yml` e `sugestao.yml`) pela URL e abre o GitHub; nada é enviado pela página. Windows e escala da tela vêm do navegador e podem ser editados. Sem conta no GitHub, o visitante salva o relato como `docknt-feedback.txt`.
-
-`site-config.js` define `feedbackRepository` (`dono/repositorio`). Vazio, a página só oferece salvar o arquivo. Os nomes das áreas e frequências em `index.html` precisam ser idênticos às opções dos `dropdown` em `bug.yml`, senão o GitHub não os pré-seleciona.
+O canal de bugs e sugestões ainda não está aberto: a página só anuncia que ele chega junto com o lançamento. Os modelos de issue em `.github/ISSUE_TEMPLATE/` (`bug.yml` e `sugestao.yml`) já ficam prontos no repositório público para quando o canal abrir.
 
 ## Conteúdo
 

@@ -31,9 +31,9 @@ em.it{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:
 .nav{position:sticky;top:0;z-index:50;background:var(--navbg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .2s}
 .nav.b{border-color:var(--line)}
 .nav .wrap{display:flex;align-items:center;gap:18px;height:66px}
-.brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:17px;text-decoration:none}
+.brand{flex:none;white-space:nowrap;display:flex;align-items:center;gap:9px;font-weight:800;font-size:17px;text-decoration:none}
 .brand img{width:28px;height:28px}
-.tabsTop{display:flex;gap:2px;background:var(--bg2);border-radius:10px;padding:3px}
+.tabsTop{flex:none;display:flex;gap:2px;background:var(--bg2);border-radius:10px;padding:3px}
 .tabsTop a{white-space:nowrap;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--mute);padding:5px 11px;border-radius:8px}
 .tabsTop a.on{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
 .links{display:flex;gap:2px;margin-left:auto}
@@ -193,6 +193,9 @@ textarea{min-height:92px;resize:vertical}
 .dundie svg{width:64px;height:64px}
 .dundie b{display:block;font-weight:800}
 .dundie span{font-size:14.5px;color:var(--mute)}
+.soon{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:44px}
+.soon .dundie{margin-top:0}
+@media(max-width:860px){.soon{grid-template-columns:1fr;padding:28px}}
 .fsteps{list-style:none;counter-reset:f;display:grid;gap:12px;margin-top:26px}
 .fsteps li{counter-increment:f;position:relative;padding-left:40px;color:var(--mute);min-height:26px}
 .fsteps li::before{content:counter(f);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:50%;background:var(--blue2);color:var(--blue);font-weight:800;font-size:13px;display:grid;place-items:center}
@@ -234,14 +237,13 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
       <a href="#windows">Windows</a>
       <a href="#privacidade" data-i18n="n4">Privacidade</a>
       <a href="#duvidas" data-i18n="n5">Dúvidas</a>
-      <a href="#feedback" data-i18n="n6">Reportar bug</a>
     </nav>
     <button class="themeBtn" id="themeBtn" type="button"></button>
     <button class="lang" id="lang" type="button">English</button>
     <button class="menuBtn" id="menuBtn" type="button" aria-expanded="false">Menu</button>
   </div>
   <nav class="mob" id="mob" aria-label="Menu">
-    <a href="releases.html">Release notes</a><a href="#produto" data-i18n="n1">Visão geral</a><a href="#widgets">Widgets</a><a href="#studio">Dock Studio</a><a href="#windows">Windows</a><a href="#privacidade" data-i18n="n4">Privacidade</a><a href="#duvidas" data-i18n="n5">Dúvidas</a><a href="#feedback" data-i18n="n6">Reportar bug</a>
+    <a href="releases.html">Release notes</a><a href="#produto" data-i18n="n1">Visão geral</a><a href="#widgets">Widgets</a><a href="#studio">Dock Studio</a><a href="#windows">Windows</a><a href="#privacidade" data-i18n="n4">Privacidade</a><a href="#duvidas" data-i18n="n5">Dúvidas</a>
   </nav>
 </header>
 
@@ -337,51 +339,21 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   <div class="faq rv" id="faq"></div>
 </div></section>
 
-<section id="feedback"><div class="wrap fb">
-  <div>
-    <div class="eyebrow rv" data-f="eyebrow"></div>
-    <h2 class="rv" data-f="h2"></h2>
-    <p class="sub rv" data-f="sub"></p>
-    <ol class="fsteps rv"><li data-f="st1"></li><li data-f="st2"></li><li data-f="st3"></li></ol>
-    <p class="rv" style="margin-top:18px"><a class="ilink" id="openIssues" target="_blank" rel="noopener" data-f="open"></a></p>
-    <div class="dundie rv"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 8h24v10a12 12 0 0 1-24 0z" fill="#e9b949" stroke="#9a7420" stroke-width="2"/><path d="M20 12h-7a7 7 0 0 0 7 9M44 12h7a7 7 0 0 1-7 9" fill="none" stroke="#9a7420" stroke-width="2"/><path d="M29 30h6v10h-6z" fill="#c99a2e"/><path d="M22 40h20v6H22z" fill="#2b2b2b"/><path d="M18 46h28v8H18z" fill="#1a1a1a"/><circle cx="32" cy="15" r="4" fill="#fff3c4"/></svg><div><b data-f="dH"></b><span data-f="dP"></span></div></div>
+<section id="feedback"><div class="wrap">
+  <div class="soon rv">
+    <div>
+      <div class="eyebrow" data-f="eyebrow"></div>
+      <h2 data-f="h2"></h2>
+      <p class="sub" data-f="sub"></p>
+    </div>
+    <div class="dundie"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 8h24v10a12 12 0 0 1-24 0z" fill="#e9b949" stroke="#9a7420" stroke-width="2"/><path d="M20 12h-7a7 7 0 0 0 7 9M44 12h7a7 7 0 0 1-7 9" fill="none" stroke="#9a7420" stroke-width="2"/><path d="M29 30h6v10h-6z" fill="#c99a2e"/><path d="M22 40h20v6H22z" fill="#2b2b2b"/><path d="M18 46h28v8H18z" fill="#1a1a1a"/><circle cx="32" cy="15" r="4" fill="#fff3c4"/></svg><div><b data-f="dH"></b><span data-f="dP"></span></div></div>
   </div>
-  <form id="fbForm" class="rv" novalidate>
-    <div class="seg" role="tablist" id="fKind"><button type="button" role="tab" data-k="bug" class="on" data-f="kBug"></button><button type="button" role="tab" data-k="idea" data-f="kIdea"></button></div>
-    <label><span data-f="lTitle"></span><input name="title" id="fTitle" required maxlength="120"></label>
-    <a class="ilink small" id="similar" target="_blank" rel="noopener" hidden></a>
-    <div class="only-bug">
-      <div class="row">
-        <label><span data-f="lArea"></span><select name="area" id="fArea"></select></label>
-        <label><span data-f="lVersion"></span><select name="version" id="fVersion"></select></label>
-      </div>
-      <label><span data-f="lWhat"></span><textarea name="what" id="fWhat" required></textarea></label>
-      <label><span data-f="lExpected"></span><textarea name="expected" id="fExpected" rows="2"></textarea></label>
-      <label><span data-f="lSteps"></span><textarea name="steps" id="fSteps"></textarea></label>
-      <div class="lbl" data-f="lFreq"></div>
-      <div class="seg small" id="fFreq"></div>
-      <div class="row">
-        <label><span data-f="lWin"></span><input name="windows" id="fWin"></label>
-        <label><span data-f="lDisplay"></span><input name="display" id="fDisplay"></label>
-      </div>
-      <p class="small" data-f="autoNote"></p>
-    </div>
-    <div class="only-idea" hidden>
-      <label><span data-f="lProblem"></span><textarea name="problem" id="fProblem" required></textarea></label>
-      <label><span data-f="lIdea"></span><textarea name="idea" id="fIdea" required></textarea></label>
-    </div>
-    <p class="ferr" id="fErr" role="alert"></p>
-    <div class="factions"><button class="btn dark" type="submit" id="fSend"></button><button class="btn" type="button" id="fSave" data-f="save"></button></div>
-    <p class="small" id="fNote"></p>
-  </form>
 </div></section>
 </main>
 
 <footer><div class="wrap"><span>© 2026 Arkhenet Labs · <span data-i18n="rights">Todos os direitos reservados</span></span><span data-i18n="foot">Nenhuma dock foi ferida na produção deste site.</span></div></footer>
 
-<script src="site-config.js"></script>
 <script>
-const REPO=((window.DOCKNT_SITE||{}).feedbackRepository||'').trim();
 const T={
 pt:{
 skip:"Pular para o conteúdo",tabP:"Produto",n1:"Visão geral",n4:"Privacidade",n5:"Dúvidas",n6:"Reportar bug",
@@ -425,7 +397,7 @@ faq:[["É uma dock?","É. O nome foi decidido numa sexta, às 17h40, e ninguém 
 ["E se ele travar?","A barra de tarefas do Windows volta sozinha. Tem um processo separado só pra isso."],
 ["Quando lança? Quanto custa?","Em breve, na Microsoft Store. Data e preço ainda estão em reunião. A reunião foi remarcada. Acompanhe pelas release notes."],
 ["Precisa de administrador?","Não. Ele não mexe no Explorer nem no sistema."],
-["Onde reporto um problema?","No formulário logo abaixo."]],
+["Onde reporto um problema?","Um canal público para bugs e sugestões chega junto com o lançamento."]],
 h2g:"Achou um problema? <em class='it'>Conta pra gente.</em>",
 rights:"Todos os direitos reservados",foot:"Nenhuma dock foi ferida na produção deste site.",lang:"English",
 },
@@ -471,7 +443,7 @@ faq:[["Is it a dock?","Yes. The name was decided on a Friday at 5:40 pm and nobo
 ["What if it crashes?","The Windows taskbar comes back on its own. There's a separate process just for that."],
 ["When does it launch? How much?","Soon, on the Microsoft Store. Date and price are still in a meeting. The meeting was rescheduled. Follow the release notes."],
 ["Does it need admin rights?","No. It doesn't touch Explorer or the system."],
-["Where do I report a problem?","In the form right below."]],
+["Where do I report a problem?","A public channel for bugs and suggestions arrives with the launch."]],
 h2g:"Found a problem? <em class='it'>Tell us.</em>",
 rights:"All rights reserved",foot:"No docks were harmed in the making of this site.",lang:"Português",
 }};
@@ -569,74 +541,15 @@ const links=$$('.links a');
 const so=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-45% 0px -50% 0px'});
 $$('section[id]').forEach(s=>so.observe(s));
 
-// Feedback: the form fills the public site repository's issue forms
-// (.github/ISSUE_TEMPLATE/bug.yml and sugestao.yml); nothing is sent from this page.
-const VERSIONS=['0.1.24-beta','0.1.12-beta','0.1.0-beta'];
-const AREAS=['Apps e ícones / Apps & icons','Widgets','Busca / Search','Bandeja e barra de tarefas / Tray & taskbar','Dock Studio','Vários monitores e perfis / Monitors & profiles','Desempenho / Performance','Outro / Other'];
-const FREQ=['Sempre / Always','Às vezes / Sometimes','Uma vez / Once'];
+// Feedback channel: announced, not open yet.
 const FB={
-pt:{eyebrow:"Reportar bug",h2:"Achou um problema? <em class='it'>Conta pra gente.</em>",
-sub:"Os relatos viram issues públicas no GitHub, onde você acompanha a correção. Prometemos não marcar uma reunião sobre isso.",
-st1:"<b>Descreva aqui.</b> Windows e escala da tela já vêm preenchidos.",st2:"<b>Revise no GitHub.</b> A issue abre pronta. Arraste um print se tiver.",st3:"<b>Acompanhe.</b> Você recebe aviso quando alguém responder ou corrigir.",
-open:"Ver issues abertas ↗",dH:"Prêmio Dundie de Melhor Relato de Bug",dP:"Todo mês, o relato mais claro ganha um Dundie. O troféu é imaginário. A gratidão é real.",
-kBug:"Bug",kIdea:"Sugestão",lTitle:"Resumo em uma linha",tBug:"A dock some depois que o PC volta da suspensão",tIdea:"Atalho de teclado para trocar de perfil",
-similar:"Procurar issues parecidas antes ↗",lArea:"Área",lVersion:"Versão do Dockn't",unknown:"Não sei",
-lWhat:"O que aconteceu?",lExpected:"O que você esperava?",lSteps:"Como reproduzir",pSteps:"1. \n2. \n3. ",lFreq:"Com que frequência?",freq:["Sempre","Às vezes","Uma vez"],
-lWin:"Windows",lDisplay:"Monitores e escala",autoNote:"Detectamos Windows e escala pelo navegador. Confira antes de continuar. A versão está em Dock Studio → Sobre.",
-lProblem:"Qual problema isso resolve?",lIdea:"Sua ideia",
-send:"Continuar no GitHub ↗",save:"Salvar como .txt",
-note:"Precisa de uma conta no GitHub para enviar. Nada sai desta página antes de você clicar em “Create” lá. Sem conta? Salve o relato e mande depois.",
-noRepo:"O canal público de issues ainda não foi configurado. Salve o relato como .txt por enquanto.",
-need:"Preencha o resumo e o que aconteceu.",needIdea:"Preencha o resumo, o problema e a ideia.",scale:"escala",screen:"tela"},
-en:{eyebrow:"Report a bug",h2:"Found a problem? <em class='it'>Tell us.</em>",
-sub:"Reports become public GitHub issues, where you can follow the fix. We promise not to schedule a meeting about it.",
-st1:"<b>Describe it here.</b> Windows and display scale are already filled in.",st2:"<b>Review on GitHub.</b> The issue opens ready. Drag in a screenshot if you have one.",st3:"<b>Follow along.</b> You get notified when someone replies or fixes it.",
-open:"See open issues ↗",dH:"The Dundie for Best Bug Report",dP:"Every month, the clearest report wins a Dundie. The trophy is imaginary. The gratitude is real.",
-kBug:"Bug",kIdea:"Suggestion",lTitle:"One-line summary",tBug:"Dock disappears after the PC wakes from sleep",tIdea:"A keyboard shortcut to switch profiles",
-similar:"Search similar issues first ↗",lArea:"Area",lVersion:"Dockn't version",unknown:"Not sure",
-lWhat:"What happened?",lExpected:"What did you expect?",lSteps:"Steps to reproduce",pSteps:"1. \n2. \n3. ",lFreq:"How often?",freq:["Always","Sometimes","Once"],
-lWin:"Windows",lDisplay:"Monitors and scale",autoNote:"We detected Windows and scale from your browser. Check them before continuing. The version is in Dock Studio → About.",
-lProblem:"What problem does this solve?",lIdea:"Your idea",
-send:"Continue on GitHub ↗",save:"Save as .txt",
-note:"You need a GitHub account to send it. Nothing leaves this page until you click “Create” there. No account? Save the report and send it later.",
-noRepo:"The public issue channel isn't set up yet. Save the report as .txt for now.",
-need:"Fill in the summary and what happened.",needIdea:"Fill in the summary, the problem and the idea.",scale:"scale",screen:"screen"}};
-let fbKind='bug',fbFreq=0;
-const AREA_PT=["Apps e ícones","Widgets","Busca","Bandeja e barra de tarefas","Dock Studio","Vários monitores e perfis","Desempenho","Outro"];
-const AREA_EN=["Apps & icons","Widgets","Search","Tray & taskbar","Dock Studio","Monitors & profiles","Performance","Other"];
-function fbApply(){
-  const f=FB[lang];
-  $$('[data-f]').forEach(el=>{if(f[el.dataset.f]!==undefined)el.innerHTML=f[el.dataset.f]});
-  $('#fTitle').placeholder=fbKind==='bug'?f.tBug:f.tIdea;$('#fSteps').placeholder=f.pSteps;
-  const a=$('#fArea').value;$('#fArea').innerHTML=(lang==='pt'?AREA_PT:AREA_EN).map((x,i)=>`<option value="${i}">${x}</option>`).join('');if(a)$('#fArea').value=a;
-  const v=$('#fVersion').value;$('#fVersion').innerHTML=VERSIONS.map(x=>`<option>${x}</option>`).join('')+`<option value="">${f.unknown}</option>`;if(v!=='')$('#fVersion').value=v||VERSIONS[0];
-  $('#fFreq').innerHTML=f.freq.map((x,i)=>`<button type="button" data-q="${i}"${i===fbFreq?' class="on"':''}>${x}</button>`).join('');
-  $('#fSend').textContent=f.send;$('#fSend').hidden=!REPO;
-  $('#fNote').textContent=REPO?f.note:f.noRepo;
-  const o=$('#openIssues');o.hidden=!REPO;if(REPO)o.href=`https://github.com/${REPO}/issues`;
-  similar();
-}
-function similar(){const t=$('#fTitle').value.trim(),el=$('#similar');el.hidden=!REPO||t.length<4;if(!el.hidden){el.textContent=FB[lang].similar;el.href=`https://github.com/${REPO}/issues?q=`+encodeURIComponent('is:issue '+t)}}
-$('#fTitle').addEventListener('input',similar);
-$('#fKind').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;fbKind=b.dataset.k;$$('#fKind button').forEach(x=>x.classList.toggle('on',x===b));
-  $('.only-bug').hidden=fbKind!=='bug';$('.only-idea').hidden=fbKind==='bug';$('#fErr').textContent='';fbApply()});
-$('#fFreq').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;fbFreq=+b.dataset.q;$$('#fFreq button').forEach(x=>x.classList.toggle('on',x===b))});
-// Prefill what the browser can tell: Windows 11 reports platform version 13 or later.
-(async()=>{let win='Windows';try{const h=await navigator.userAgentData.getHighEntropyValues(['platformVersion']);const major=parseInt(h.platformVersion,10);win=major>=13?'Windows 11':major>0?'Windows 10':'Windows'}catch(e){}
-  if(!$('#fWin').value)$('#fWin').value=win;
-  if(!$('#fDisplay').value)$("#fDisplay").value=`${Math.round(devicePixelRatio*100)}%`+(screen.width?` · ${screen.width}×${screen.height}`:"")})();
-function fbFields(){const v=id=>$(id).value.trim();
-  if(fbKind==='bug')return{template:'bug.yml',title:v('#fTitle'),area:AREAS[+$('#fArea').value],what:v('#fWhat'),expected:v('#fExpected'),steps:v('#fSteps'),frequency:FREQ[fbFreq],version:$('#fVersion').value,windows:v('#fWin'),display:v('#fDisplay')};
-  return{template:'sugestao.yml',title:v('#fTitle'),problem:v('#fProblem'),idea:v('#fIdea'),version:VERSIONS[0]}}
-function fbValid(d){const ok=d.template==='bug.yml'?d.title&&d.what:d.title&&d.problem&&d.idea;$('#fErr').textContent=ok?'':(d.template==='bug.yml'?FB[lang].need:FB[lang].needIdea);return ok}
-$('#fbForm').addEventListener('submit',e=>{e.preventDefault();const d=fbFields();if(!fbValid(d)||!REPO)return;
-  const q=new URLSearchParams();Object.entries(d).forEach(([k,v])=>{if(v)q.set(k,v)});
-  window.open(`https://github.com/${REPO}/issues/new?`+q,'_blank','noopener')});
-let fileUrl=null;
-$('#fSave').onclick=()=>{const d=fbFields();if(!fbValid(d))return;
-  const lines=Object.entries(d).filter(([k,v])=>k!=='template'&&v).map(([k,v])=>`${k}:\n${v}\n`);
-  if(fileUrl)URL.revokeObjectURL(fileUrl);fileUrl=URL.createObjectURL(new Blob([`Dockn't ${d.template==='bug.yml'?'bug':'suggestion'}\n\n`+lines.join('\n')],{type:'text/plain'}));
-  const a=document.createElement('a');a.href=fileUrl;a.download='docknt-feedback.txt';a.click()};
+pt:{eyebrow:"Feedback",h2:"Um canal para bugs e ideias <em class='it'>está chegando.</em>",
+sub:"Vamos abrir um canal público para você reportar problemas e sugerir recursos junto com o lançamento. Até lá, a lista de bugs está numa pasta. A pasta está numa gaveta. A gaveta está trancada.",
+dH:"Prêmio Dundie de Melhor Relato de Bug",dP:"Quando o canal abrir, o relato mais claro do mês ganha um Dundie. O troféu é imaginário. A gratidão é real."},
+en:{eyebrow:"Feedback",h2:"A channel for bugs and ideas <em class='it'>is coming.</em>",
+sub:"We'll open a public channel for reporting problems and suggesting features around launch. Until then, the bug list is in a folder. The folder is in a drawer. The drawer is locked.",
+dH:"The Dundie for Best Bug Report",dP:"Once the channel opens, the clearest report of the month wins a Dundie. The trophy is imaginary. The gratitude is real."}};
+function fbApply(){const f=FB[lang];$$('[data-f]').forEach(el=>{if(f[el.dataset.f]!==undefined)el.innerHTML=f[el.dataset.f]})}
 
 apply();size();studio();
 </script>

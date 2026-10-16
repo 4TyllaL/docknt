@@ -99,17 +99,17 @@ h2{font-size:clamp(34px,4.8vw,58px);line-height:1.02;letter-spacing:-.04em;font-
 .oc{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
 .oc .pic{height:190px;background:var(--wall);display:flex;align-items:center;justify-content:center;padding:18px;overflow:hidden}
 .oc .pic.green{background:#20321f}
-.oc .crop{height:62px;border-radius:12px;background:url(shots/real-dock.png) no-repeat;background-size:760px 76px;box-shadow:0 10px 24px rgba(0,0,0,.35)}
+.oc .crop{height:62px;border-radius:12px;background:url(shots/dock-render.png) no-repeat;background-size:780px 72px;box-shadow:0 10px 24px rgba(0,0,0,.35)}
 .oc .txt{padding:22px 24px 26px}
 .oc h3{font-size:18px;font-weight:800}
 .oc p{color:var(--mute);font-size:15px;margin-top:6px}
 
 /* widgets */
-.tile{background-size:606px 56px;background-repeat:no-repeat;height:56px;border-radius:14px;flex:none}
-.tile.S{width:52px;background-position:0 0}
-.tile.M{width:112px;background-position:-62px 0}
-.tile.L{width:168px;background-position:-186px 0}
-.tile.XL{width:240px;background-position:-366px 0}
+.tile{background-size:584px 44px;background-repeat:no-repeat;height:44px;border-radius:14px;flex:none}
+.tile.S{width:44px;background-position:0 0}
+.tile.M{width:112px;background-position:-56px 0}
+.tile.L{width:168px;background-position:-180px 0}
+.tile.XL{width:224px;background-position:-360px 0}
 .sizes{display:grid;grid-template-columns:.9fr 1.1fr;gap:44px;align-items:center;margin-top:50px}
 @media(max-width:900px){.sizes{grid-template-columns:1fr}}
 .stage{border-radius:18px;background:var(--wall);padding:60px 24px 44px;display:flex;flex-direction:column;align-items:center;gap:16px}
@@ -124,7 +124,7 @@ h2{font-size:clamp(34px,4.8vw,58px);line-height:1.02;letter-spacing:-.04em;font-
 .wgrid{display:grid;grid-template-columns:repeat(3,1fr);margin-top:20px;border-top:1px solid var(--line)}
 @media(max-width:900px){.wgrid{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.wgrid{grid-template-columns:1fr}}
-.wi{display:grid;grid-template-columns:52px 1fr;gap:16px;align-items:start;padding:18px 16px 18px 0;border-bottom:1px solid var(--line)}
+.wi{display:grid;grid-template-columns:44px 1fr;gap:16px;align-items:start;padding:18px 16px 18px 0;border-bottom:1px solid var(--line)}
 .wi .tile{background-color:#2a2346}
 .wi h4{font-size:15px;font-weight:700}
 .wi p{font-size:14px;color:var(--mute);margin-top:1px}
@@ -253,8 +253,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   <h1 class="rv" data-i18n="h1">Isto não é<br><em class="it">uma dock.</em></h1>
   <p class="lede rv" data-i18n="lede">É uma barra nativa para o Windows 11, feita em Rust, com seus apps e widgets que mostram o que está acontecendo. Os dados ficam no seu computador. O nome é ironia.</p>
   <div class="ctas rv"><a class="btn dark" href="#produto" data-i18n="cta1">Ver por dentro</a><a class="btn" href="releases.html" data-i18n="cta2">Release notes</a></div>
-  <figure class="capture rv"><span class="tag" data-i18n="tag">captura real · Windows 11</span><img src="shots/real-dock.png" width="760" height="76" alt="Dockn't rodando no Windows 11"></figure>
-  <figcaption class="capnote" data-i18n="capnote">Captura de tela real, sexta-feira, 13h03. Horário de almoço. Ninguém viu nada.</figcaption>
+  <figure class="capture rv"><span class="tag" data-i18n="tag">renderizado · Windows 11</span><img src="shots/dock-render.png" width="780" height="72" alt="O Dockn't com apps e widgets"></figure>
+  <figcaption class="capnote" data-i18n="capnote">Renderizado pelo próprio código do Dockn't, com dados de demonstração. Sexta-feira, 13h03. Ninguém viu nada.</figcaption>
   <div class="th rv"><q data-i18n="q1">“A gente não chama de dock. A gente chama de… uma barra. Com seus apps. Que fica embaixo. <i>[pausa]</i> É uma dock.”</q><div class="chyron"><b>Atylla Azevedo</b><span data-i18n="q1r">Fundador, Arkhenet Labs</span></div></div>
 </div>
 
@@ -263,15 +263,15 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
   <h2 class="rv" data-i18n="h2a">A barra de tarefas mostra o que está aberto. <em class="it">O Dockn't mostra o que está acontecendo.</em></h2>
   <p class="sub rv" data-i18n="s2a">Os apps de sempre de um lado, os widgets do outro, e tudo se atualiza só quando muda.</p>
   <div class="over3">
-    <article class="oc rv"><div class="pic green"><div class="crop" style="width:300px;background-position:-10px -7px"></div></div><div class="txt"><h3 data-i18n="o1h">Seus apps</h3><p data-i18n="o1p">Fixe, reordene e solte arquivos nos ícones. Os apps abertos aparecem depois de um divisor, com prévia das janelas.</p></div></article>
-    <article class="oc rv"><div class="pic green"><div class="crop" style="width:300px;background-position:-340px -7px"></div></div><div class="txt"><h3 data-i18n="o2h">Widgets ao vivo</h3><p data-i18n="o2p">Relógio, agenda, música, Pomodoro, bateria e mais 30. Clique em um e ele abre um painel.</p></div></article>
-    <article class="oc rv"><div class="pic"><img src="shots/studio-look.png" width="956" height="676" alt="" style="border-radius:8px;box-shadow:0 12px 30px rgba(0,0,0,.4);max-height:160px;width:auto"></div><div class="txt"><h3 data-i18n="o3h">Do seu jeito</h3><p data-i18n="o3p">Tamanho, temas, cores e comportamento, ajustados no Dock Studio com prévia ao vivo.</p></div></article>
+    <article class="oc rv"><div class="pic green"><div class="crop" style="width:300px;background-position:-12px -6px"></div></div><div class="txt"><h3 data-i18n="o1h">Seus apps</h3><p data-i18n="o1p">Fixe, reordene e solte arquivos nos ícones. Os apps abertos aparecem depois de um divisor, com prévia das janelas.</p></div></article>
+    <article class="oc rv"><div class="pic green"><div class="crop" style="width:300px;background-position:-340px -6px"></div></div><div class="txt"><h3 data-i18n="o2h">Widgets ao vivo</h3><p data-i18n="o2p">Relógio, agenda, música, Pomodoro, bateria e mais 34. Clique em um e ele abre um painel.</p></div></article>
+    <article class="oc rv"><div class="pic"><img src="shots/studio-look.png" width="1160" height="820" alt="" style="border-radius:8px;box-shadow:0 12px 30px rgba(0,0,0,.4);max-height:160px;width:auto"></div><div class="txt"><h3 data-i18n="o3h">Do seu jeito</h3><p data-i18n="o3p">Tamanho, temas, cores e comportamento, ajustados no Dock Studio com prévia ao vivo.</p></div></article>
   </div>
 </div></section>
 
 <section class="alt" id="widgets"><div class="wrap">
   <div class="eyebrow rv">Widgets</div>
-  <h2 class="rv" data-i18n="h2b">37 widgets. <em class="it">Cada um do tamanho que precisa.</em></h2>
+  <h2 class="rv" data-i18n="h2b">39 widgets. <em class="it">Cada um do tamanho que precisa.</em></h2>
   <p class="sub rv" data-i18n="s2b">Um quadrado quando é só um número. Uma faixa larga quando tem mais coisa pra dizer. A maioria tem de uma a quatro larguras.</p>
   <div class="sizes">
     <div class="rv">
@@ -300,7 +300,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
         <li data-i18n="sl3"></li>
       </ul>
     </div>
-    <figure class="rv"><div class="frame"><img id="sImg" src="shots/studio-dock.png" width="956" height="676" alt="Dock Studio"></div><div class="docks"><figure><img src="shots/dock.png" width="642" height="60" alt=""><figcaption data-i18n="dkDark"></figcaption></figure><figure class="lightwall"><img src="shots/dock-light.png" width="648" height="60" alt=""><figcaption data-i18n="dkLight"></figcaption></figure></div><figcaption class="render" data-i18n="renderNote">Renderização da interface pelo próprio código do Dockn't, com dados de demonstração.</figcaption></figure>
+    <figure class="rv"><div class="frame"><img id="sImg" src="shots/studio-dock.png" width="1160" height="820" alt="Dock Studio"></div><div class="docks"><figure><img src="shots/dock.png" width="642" height="60" alt=""><figcaption data-i18n="dkDark"></figcaption></figure><figure class="lightwall"><img src="shots/dock-light.png" width="648" height="60" alt=""><figcaption data-i18n="dkLight"></figcaption></figure></div><figcaption class="render" data-i18n="renderNote">Renderização da interface pelo próprio código do Dockn't, com dados de demonstração.</figcaption></figure>
   </div>
 </div></section>
 
@@ -360,15 +360,15 @@ skip:"Pular para o conteúdo",tabP:"Produto",n1:"Visão geral",n4:"Privacidade",
 pill:"Em preparação para a Microsoft Store",
 h1:"Isto não é<br><em class='it'>uma dock.</em>",
 lede:"É uma barra nativa para o Windows 11, feita em Rust, com seus apps e widgets que mostram o que está acontecendo. Os dados ficam no seu computador. O nome é ironia.",
-cta1:"Ver por dentro",cta2:"Release notes",tag:"captura real · Windows 11",
-capnote:"Captura de tela real, sexta-feira, 13h03. Horário de almoço. Ninguém viu nada.",
+cta1:"Ver por dentro",cta2:"Release notes",tag:"renderizado · Windows 11",
+capnote:"Renderizado pelo próprio código do Dockn't, com dados de demonstração. Sexta-feira, 13h03. Ninguém viu nada.",
 q1:"“A gente não chama de dock. A gente chama de… uma barra. Com seus apps. Que fica embaixo. <i>[pausa]</i> É uma dock.”",q1r:"Fundador, Arkhenet Labs",
 e1:"Visão geral",h2a:"A barra de tarefas mostra o que está aberto. <em class='it'>O Dockn't mostra o que está acontecendo.</em>",
 s2a:"Os apps de sempre de um lado, os widgets do outro, e tudo se atualiza só quando muda.",
 o1h:"Seus apps",o1p:"Fixe, reordene e solte arquivos nos ícones. Os apps abertos aparecem depois de um divisor, com prévia das janelas.",
-o2h:"Widgets ao vivo",o2p:"Relógio, agenda, música, Pomodoro, bateria e mais 30. Clique em um e ele abre um painel.",
+o2h:"Widgets ao vivo",o2p:"Relógio, agenda, música, Pomodoro, bateria e mais 34. Clique em um e ele abre um painel.",
 o3h:"Do seu jeito",o3p:"Oito temas, cores, placas, perfis por monitor e comportamento, ajustados no Dock Studio com prévia ao vivo.",
-h2b:"37 widgets. <em class='it'>Cada um do tamanho que precisa.</em>",
+h2b:"39 widgets. <em class='it'>Cada um do tamanho que precisa.</em>",
 s2b:"Um quadrado quando é só um número. Uma faixa larga quando tem mais coisa pra dizer. A maioria tem de uma a quatro larguras.",
 szP:"Escolha um widget e uma largura",twss:"— Dá pra deixar maior?<br>— Foi o que ela disse.",renderTag:"renderizado pelo código do Dockn't",
 q2:"“Coloquei o widget de água no computador do escritório inteiro. Ninguém passou a beber mais água. Mas agora todo mundo sabe que não bebeu.”",q2n:"Gerente regional",q2r:"Iniciativa de bem-estar, fase 1 de 1",
@@ -378,7 +378,7 @@ s2c:"As mudanças valem na hora, e a prévia no topo mostra a dock como ela vai 
 t2:"Aparência",t3:"Comportamento",t4:"Sobre",dark:"Escuro",light:"Claro",
 sl1:"<b>Oito temas:</b> vidro escuro, claro, sólido, neon, papel, alto contraste, floresta e crepúsculo.",sl2:"<b>Personalizar:</b> placas, pulo, contorno, halo, reflexo, ampliação e uma cor só sua.",sl3:"<b>Perfis por monitor:</b> cada tela com seus itens, trocados pelos pontos na própria dock.",
 stabs:["Dock","Perfis","Aparência","Personalizar","Comportamento","Configurações","Sobre"],dkDark:"Vidro escuro",dkLight:"Claro",themes:["Tema: automático","Tema: claro","Tema: escuro"],
-renderNote:"Telas e docks renderizadas pelo próprio código do Dockn't 0.1.24-beta, com dados de demonstração.",
+renderNote:"Telas e docks renderizadas pelo próprio código do Dockn't 0.1.30-beta, com dados de demonstração.",
 h2d:"Feita pro Windows. <em class='it'>Não pra imitar o Mac.</em>",
 s2d:"Convive com a barra de tarefas ou toma o lugar dela. Não injeta nada no Explorer e não pede administrador.",
 g4:[["Busca","<kbd>Alt</kbd> + <kbd>Espaço</kbd> acha apps, arquivos e configurações, e faz contas."],["Bandeja","Os ícones da área de notificação podem morar na dock."],["Pilhas","Pastas como Downloads abrem direto da barra."],["Menus completos","Botão direito com fechar janela, abrir outra, mostrar na pasta."],["Selos","Contagem de notificações nos ícones, como na barra do Windows."],["Tela cheia","Some em jogos e vídeos e volta quando você sai."],["Vários monitores","A barra acompanha a tela em que você está."],["Acessibilidade","Respeita os efeitos de animação do Windows e a escala de DPI."]],
@@ -406,15 +406,15 @@ skip:"Skip to content",tabP:"Product",n1:"Overview",n4:"Privacy",n5:"FAQ",n6:"Re
 pill:"Getting ready for the Microsoft Store",
 h1:"This is not<br><em class='it'>a dock.</em>",
 lede:"It's a native bar for Windows 11, written in Rust, with your apps and widgets that show what's going on. Your data stays on your computer. The name is irony.",
-cta1:"Look inside",cta2:"Release notes",tag:"real capture · Windows 11",
-capnote:"Real screenshot, Friday, 1:03 pm. Lunch break. Nobody saw anything.",
+cta1:"Look inside",cta2:"Release notes",tag:"rendered · Windows 11",
+capnote:"Rendered by Dockn't's own code, with demo data. Friday, 1:03 pm. Nobody saw anything.",
 q1:"“We don't call it a dock. We call it… a bar. With your apps. That sits at the bottom. <i>[pause]</i> It's a dock.”",q1r:"Founder, Arkhenet Labs",
 e1:"Overview",h2a:"The taskbar shows what's open. <em class='it'>Dockn't shows what's going on.</em>",
 s2a:"Your usual apps on one side, widgets on the other, and everything updates only when it changes.",
 o1h:"Your apps",o1p:"Pin, reorder and drop files on icons. Running apps appear after a divider, with window previews.",
-o2h:"Live widgets",o2p:"Clock, calendar, music, Pomodoro, battery and 30 more. Click one and it opens a panel.",
+o2h:"Live widgets",o2p:"Clock, calendar, music, Pomodoro, battery and 34 more. Click one and it opens a panel.",
 o3h:"Your way",o3p:"Eight themes, colors, plates, per-monitor profiles and behavior, tuned in Dock Studio with a live preview.",
-h2b:"37 widgets. <em class='it'>Each one as big as it needs.</em>",
+h2b:"39 widgets. <em class='it'>Each one as big as it needs.</em>",
 s2b:"A square when it's just a number. A wide strip when there's more to say. Most have one to four widths.",
 szP:"Pick a widget and a width",twss:"— Can it get bigger?<br>— That's what she said.",renderTag:"rendered by Dockn't's own code",
 q2:"“I put the water widget on every computer in the office. Nobody drinks more water. But now everybody knows they didn't.”",q2n:"Regional manager",q2r:"Wellness initiative, phase 1 of 1",
@@ -424,7 +424,7 @@ s2c:"Changes apply instantly, and the preview at the top shows the dock exactly 
 t2:"Appearance",t3:"Behavior",t4:"About",dark:"Dark",light:"Light",
 sl1:"<b>Eight themes:</b> dark glass, light, solid, neon, paper, high contrast, forest and dusk.",sl2:"<b>Personalize:</b> plates, bounce, outline, halo, reflection, magnification and a color of your own.",sl3:"<b>Per-monitor profiles:</b> each screen with its own items, switched from dots on the dock.",
 stabs:["Dock","Profiles","Appearance","Personalize","Behavior","Settings","About"],dkDark:"Dark glass",dkLight:"Light",themes:["Theme: auto","Theme: light","Theme: dark"],
-renderNote:"Screens and docks rendered by Dockn't 0.1.24-beta's own code, with demo data.",
+renderNote:"Screens and docks rendered by Dockn't 0.1.30-beta's own code, with demo data.",
 h2d:"Made for Windows. <em class='it'>Not to imitate the Mac.</em>",
 s2d:"It lives alongside the taskbar or takes its place. It injects nothing into Explorer and never asks for admin.",
 g4:[["Search","<kbd>Alt</kbd> + <kbd>Space</kbd> finds apps, files and settings, and does math."],["Tray","Your notification-area icons can live on the dock."],["Stacks","Folders like Downloads open right from the bar."],["Full menus","Right-click to close a window, open another, show in folder."],["Badges","Notification counts on icons, like the Windows taskbar."],["Fullscreen","Hides for games and videos and returns when you leave."],["Multiple monitors","The bar follows the screen you're on."],["Accessibility","Respects Windows animation effects and DPI scaling."]],
@@ -486,6 +486,8 @@ const W=[
 ["favorites","Favoritos","Favorites","Os sites que você abre todo dia.","The sites you open every day.",5],
 ["claude","Uso do Claude","Claude usage","Quanto do plano já foi e quando zera.","How much of the plan is used and when it resets.",5],
 ["aichat","Chat de IA","AI chat","Converse com a sua própria chave.","Chat with your own key.",5],
+["parcels","Encomendas","Parcels","Acompanha as encomendas pelo código de rastreio.","Tracks your parcels by tracking code.",5],
+["wallpaper","Motor de wallpaper","Wallpaper engine","Acompanha o IsNotAEngine: wallpaper atual, pausa e próximo.","Follows IsNotAEngine: current wallpaper, pause and next.",3],
 ["ifood","iFood","iFood","Seus pedidos salvos, pro almoço não virar reunião.","Your saved orders, so lunch doesn't become a meeting.",5],
 ];
 const SZ=["weather","clock","music","pomodoro","github","calendar"];

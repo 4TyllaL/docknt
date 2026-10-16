@@ -16,7 +16,8 @@ O canal de bugs e sugestões ainda não está aberto: a página só anuncia que 
 
 ## Conteúdo
 
-- `shots/real-dock.png`: captura de tela real do Dockn't 0.1.23 instalado, recortada só na dock.
-- `shots/studio-*.png`, `shots/dock*.png`, `shots/menu-*.png` e `shots/w-*.png`: renderizados por `cargo run --bin widget_gallery` (0.1.24-beta) com dados de demonstração; a página os identifica como renderizações.
+- `shots/dock-render.png`: a dock recortada da prévia do Dock Studio renderizado.
+- `logo.png`: o ícone atual (`packaging/Assets`, 256 px).
+- `shots/studio-*.png`, `shots/dock*.png`, `shots/menu-*.png` e `shots/w-*.png`: renderizados por `cargo run --bin widget_gallery` (0.1.30-beta) com dados de demonstração; a página os identifica como renderizações.
 - Release notes: o histórico fica no array `R` dentro de `releases.html`, escrito a partir dos commits. Atualize a cada versão beta e marque `current` só na mais recente.
 - A V1 está em preparação: sem link de compra, preço, número de CPU garantido ou promessa de Windows 10.
